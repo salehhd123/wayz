@@ -18,23 +18,21 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty(message = "the username field is required.")
+    @NotEmpty(message = "the name field is required.")
     @Column(nullable = false)
     private String name;
 
-    @NotEmpty(message = "the username field is required.")
+    @NotEmpty(message = "the university field is required.")
     @Column(nullable = false)
     private String university;
 
-    @NotEmpty(message = "the username field is required.")
+    @NotEmpty(message = "the home google map URL field is required.")
     @Column(nullable = false)
     private String home_google_map_url;
 
 
-    @NotEmpty(message = "the username field is required.")
     @Column(nullable = false)
     private Integer trips_left=0;
-
 
 
 
