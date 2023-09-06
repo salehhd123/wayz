@@ -1,5 +1,8 @@
 package com.example.wayz.Advice;
 
+import com.example.wayz.Api.ApiException.ApiException;
+import com.example.wayz.Api.ApiResponse.ApiResponse;
+import com.example.wayz.Api.ApiResponse.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
