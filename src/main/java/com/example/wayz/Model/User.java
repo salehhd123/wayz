@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,4 +34,15 @@ public class User {
     @Column(columnDefinition = "varchar(40) not null default 'USER'")
     private String role;
 
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @PrimaryKeyJoinColumn
+    private Student student;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @PrimaryKeyJoinColumn
+    private Driver driver;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<MyFile> files;
 }

@@ -1,5 +1,6 @@
 package com.example.wayz.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -34,4 +35,11 @@ public class Orders {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", referencedColumnName = "user_id")
+    @JsonIgnore
+    private Student student;
+
 }
