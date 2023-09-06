@@ -1,5 +1,6 @@
 package com.example.wayz.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -38,4 +39,9 @@ public class StudentTrips {
     private LocalDateTime timestamp;
 
 
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", referencedColumnName = "user_id")
+    @JsonIgnore
+    private Student student;
 }

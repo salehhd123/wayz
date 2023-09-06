@@ -8,16 +8,15 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "driver_table")
+@Entity(name = "driver")
 public class Driver {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     //// TODO add pattern
-    @Column(columnDefinition = "varchar(255) not null, default 'pending'")
+    @Column(columnDefinition = "varchar(255) not null default 'pending'")
     private String status;
 
     @Column(columnDefinition = "varchar(255) unique not null")
@@ -34,9 +33,13 @@ public class Driver {
 
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnore
+    @MapsId
+    @JsonIgnore // prevent infinite loop
     private User user;
 
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "driver")
+    @PrimaryKeyJoinColumn
+    private Car car;
 
 }

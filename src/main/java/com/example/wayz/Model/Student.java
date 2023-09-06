@@ -1,11 +1,14 @@
 package com.example.wayz.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,7 +18,7 @@ import lombok.Setter;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
 
     @NotEmpty(message = "the name field is required.")
@@ -28,13 +31,22 @@ public class Student {
 
     @NotEmpty(message = "the home google map URL field is required.")
     @Column(nullable = false)
-    private String home_google_map_url;
+    private String homeGoogleMapUrl;
 
 
     @Column(nullable = false)
-    private Integer trips_left=0;
+    private Integer tripsLeft=0;
 
 
+    @OneToOne
+    @MapsId
+    @JsonIgnore // prevent infinite loop
+    private User user;
 
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    private Set<StudentTrips> studentTrips;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    private Set<Orders> order;
 }
