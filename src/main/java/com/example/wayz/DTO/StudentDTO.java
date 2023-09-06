@@ -7,12 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DriverDTO {
+public class StudentDTO {
 
     @NotEmpty(message = "the username field is required.")
     @Column(nullable = false, unique = true)
@@ -23,18 +22,21 @@ public class DriverDTO {
     @Column(nullable = false)
     private String password;
 
-    @Column(columnDefinition = "varchar(255) not null default 'pending'")
-    private String status;
 
-    @Column(columnDefinition = "varchar(255) unique not null")
-    private String driverLicenceImgPath;
+    @NotEmpty(message = "the name field is required.")
+    @Column(nullable = false)
+    private String name;
 
-    @Column(columnDefinition = "varchar(255) unique not null")
-    private String carRegistrationImgPath;
+    @NotEmpty(message = "the university field is required.")
+    @Column(nullable = false)
+    private String university;
 
-    @Column(columnDefinition = "varchar(255) unique not null")
-    private String driverImgPath;
+    @NotEmpty(message = "the home google map URL field is required.")
+    @Column(nullable = false)
+    private String homeGoogleMapUrl;
 
-    @Column(columnDefinition = "varchar(255) unique not null")
-    private String govIdImgPath;
+
+    @Column(nullable = false)
+    private Integer tripsLeft=0;
+
 }
