@@ -1,9 +1,13 @@
 package com.example.wayz.Controller;
 
+import com.example.wayz.Model.Orders;
+import com.example.wayz.Model.User;
 import com.example.wayz.Service.OrdersService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -11,6 +15,55 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrdersController {
 
     private final OrdersService ordersService;
+
+
+    @GetMapping("/get-all")
+    public ResponseEntity getAllOrders() {
+        return ResponseEntity.status(200).body(ordersService.getAllOrders());
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity addOrder(@RequestBody Orders orders) {
+        ordersService.addOrders(orders);
+        return ResponseEntity.status(200).body("Order added successfully");
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity updateOrder(@PathVariable Integer id, @RequestBody @Valid Orders order) {
+        ordersService.updateOrders(id, order);
+        return ResponseEntity.status(200).body("Order updated successfully");
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteOrder(@PathVariable Integer id) {
+        ordersService.deleteOrders(id);
+        return ResponseEntity.status(200).body("Order deleted successfully");
+    }
+
+    @GetMapping("/getOrderById/{id}")
+    public ResponseEntity getOrderById(@PathVariable Integer id) {
+        return ResponseEntity.status(200).body(ordersService.getOrderById(id));
+    }
+
+    @GetMapping("/TotalRevenueFromOrders")
+    public ResponseEntity getTotalRevenueFromOrders() {
+        return ResponseEntity.status(200).body(ordersService.getTotalRevenueFromOrders());
+    }
+
+    @GetMapping("/AverageCompletionTime")
+    public ResponseEntity getAverageCompletionTime() {
+        return ResponseEntity.status(200).body(ordersService.getAverageCompletionTime());
+    }
+
+    @GetMapping("/getOrdersByStudentId")
+    public ResponseEntity getOrdersByStudentId(@AuthenticationPrincipal User user) {
+        return ResponseEntity.status(200).body(ordersService.getOrdersByStudentId(user.getId()));
+    }
+
+    @GetMapping("/MostExpensiveOrder")
+    public ResponseEntity getMostExpensiveOrder() {
+        return ResponseEntity.status(200).body(ordersService.getMostExpensiveOrder());
+    }
 
 
 }
