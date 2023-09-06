@@ -22,7 +22,7 @@ public class User {
 
 
     @NotEmpty(message = "the username field is required.")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
 
