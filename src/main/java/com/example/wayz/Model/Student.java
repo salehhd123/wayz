@@ -49,4 +49,7 @@ public class Student {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private Set<Orders> order;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    private Set<Report> Reports;
 }

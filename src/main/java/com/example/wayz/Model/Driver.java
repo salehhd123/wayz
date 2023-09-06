@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -41,5 +43,8 @@ public class Driver {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "driver")
     @PrimaryKeyJoinColumn
     private Car car;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "driver")
+    private Set<Report> Reports;
 
 }
