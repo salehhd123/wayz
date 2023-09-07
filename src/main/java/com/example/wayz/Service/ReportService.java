@@ -53,6 +53,7 @@ public class ReportService {
     public void approveReport(Integer id , Integer report_id){
         User admin = authRepository.findAdmin(id);
         Report report = reportRepository.findReportById(report_id);
+        Driver driver = report.getDriver();
         if (admin==null){
             throw new ApiException("only admin can approve reports");
         }
@@ -61,8 +62,9 @@ public class ReportService {
         }
         report.setStatus("approved");
         reportRepository.save(report);
-        if (driverRepository.countApproved()==3){
-            report.getDriver().setStatus("fired");
+        if (reportRepository.countApproved(report.getDriver().getUser().getId())==3){
+            driver.setStatus("fired");
+            driverRepository.save(driver);
         }
     }
 

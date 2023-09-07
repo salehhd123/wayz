@@ -10,7 +10,7 @@ public interface DriverRepository extends JpaRepository<Driver,Integer> {
 
     Driver findDriverById(Integer id);
 
-    @Query("select count (c) from driver c where c.Reports='approved'")
-    Integer countApproved();
+//    @Query("select count (c) from driver c where c.Reports='approved'")
+//    Integer countApproved();
 
 }
