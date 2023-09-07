@@ -29,12 +29,15 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
-    public void addReport(Integer student_id, Integer driver_id, ReportDto reportDto){
-        Student student= studentRepository.findStudentById(student_id);
+
+
+    public List<Report>getAllReportPending(){
+    return reportRepository.allPending();
+    }
+
+    public void addReport(Integer user_id, Integer driver_id, ReportDto reportDto){
+        Student student= studentRepository.findStudentById(user_id);
         Driver driver=driverRepository.findDriverById(driver_id);
-        if (student==null){
-            throw new ApiException("Student with ID " + student_id + " not found");
-        }
         if (driver== null){
             throw new ApiException("Driver with ID " + driver_id + " not found");
         }
@@ -42,7 +45,8 @@ public class ReportService {
         reportRepository.save(report);
     }
 
-    public void delete(Report report){
+    public void delete(Integer id){
+        Report report= reportRepository.findReportById(id);
         if (report==null){
             throw new ApiException("you enter wrong id");
         }
