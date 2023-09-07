@@ -59,8 +59,27 @@ public class ReportService {
         if(report==null){
             throw new ApiException("Driver with ID " + report_id + " not found");
         }
-
+        report.setStatus("approved");
+        reportRepository.save(report);
+        if (driverRepository.countApproved()==3){
+            report.getDriver().setStatus("fired");
+        }
     }
+
+    public void ignoreReport(Integer id , Integer report_id){
+        User admin = authRepository.findAdmin(id);
+        Report report = reportRepository.findReportById(report_id);
+        if (admin==null){
+            throw new ApiException("only admin can approve reports");
+        }
+        if(report==null){
+            throw new ApiException("Driver with ID " + report_id + " not found");
+        }
+        report.setStatus("ignore");
+        reportRepository.save(report);
+    }
+
+
 
 
 
