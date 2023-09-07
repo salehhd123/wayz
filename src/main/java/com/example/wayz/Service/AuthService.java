@@ -33,7 +33,7 @@ public class AuthService {
     public void registerDriver(DriverDTO driverDTO){
         User user = new User(null,driverDTO.getUsername(),driverDTO.getPassword(),"Driver",null,null,null);
         Driver driver=new Driver(null,driverDTO.getStatus(),driverDTO.getDriverLicenceImgPath(),driverDTO.getCarRegistrationImgPath(),
-                driverDTO.getDriverImgPath(), driverDTO.getGovIdImgPath(),user,null,null);
+                driverDTO.getDriverImgPath(), driverDTO.getGovIdImgPath(),user,null,null, null);
 
         String hash=new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(hash);
