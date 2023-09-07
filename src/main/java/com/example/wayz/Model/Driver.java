@@ -2,6 +2,7 @@ package com.example.wayz.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.util.Set;
@@ -17,8 +18,8 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //// TODO add pattern
-    @Column(columnDefinition = "varchar(255) not null default 'pending'")
+    @Pattern(message = "the status must be one of `pending`, `approved`, `closed`. ", regexp = "(?i)\\b(pending|approved|closed)\\b?")
+    @Column(columnDefinition = "varchar(255) not null default 'pending' check (status in ('pending', 'approved', 'closed')) ")
     private String status;
 
     @Column(columnDefinition = "varchar(255) unique not null")
@@ -47,4 +48,6 @@ public class Driver {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "driver")
     private Set<Report> Reports;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "driver")
+    private Set<DriverTrips> driverTrips;
 }
