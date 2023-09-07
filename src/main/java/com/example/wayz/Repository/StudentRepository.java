@@ -10,7 +10,7 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
 
     Student findStudentById(Integer id);
 
-    @Query("select c from student c where c.user=?1")
+    @Query("select c from student c where c.user.id=?1")
     Student findStudentByuUser(Integer id);
 
 }
