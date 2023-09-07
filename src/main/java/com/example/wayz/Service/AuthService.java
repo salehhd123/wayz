@@ -23,7 +23,7 @@ public class AuthService {
     public void registerStudent(StudentDTO studentDto){
         User user = new User(null,studentDto.getUsername(),studentDto.getPassword(),"STUDENT",null,null,null);
         Student student=new Student(null,studentDto.getName(),studentDto.getUniversity(),studentDto.getHomeGoogleMapUrl(),
-                0,0.0,user,null,null,null);
+                0,0.0,user,null,null,null,null);
 
         String hash=new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(hash);

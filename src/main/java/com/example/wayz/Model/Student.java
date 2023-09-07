@@ -55,4 +55,8 @@ public class Student {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private Set<Report> Reports;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "student")
+    @PrimaryKeyJoinColumn
+    private CreditCard creditCard;
 }
