@@ -34,6 +34,7 @@ public class Orders {
     private Integer days;
 
     @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP) // convert from database timestamp to java LocalDateTime
     private LocalDateTime createdAt;
 
 
