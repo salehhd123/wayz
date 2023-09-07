@@ -1,5 +1,6 @@
 package com.example.wayz.Controller;
 
+import com.example.wayz.DTO.OrderDTO;
 import com.example.wayz.Model.Orders;
 import com.example.wayz.Model.User;
 import com.example.wayz.Service.OrdersService;
@@ -23,7 +24,7 @@ public class OrdersController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity addOrder(@RequestBody Orders orders) {
+    public ResponseEntity addOrder(@RequestBody OrderDTO orders) {
         ordersService.addOrders(orders);
         return ResponseEntity.status(200).body("Order added successfully");
     }
@@ -45,16 +46,6 @@ public class OrdersController {
         return ResponseEntity.status(200).body(ordersService.getOrderById(id));
     }
 
-    @GetMapping("/TotalRevenueFromOrders")
-    public ResponseEntity getTotalRevenueFromOrders() {
-        return ResponseEntity.status(200).body(ordersService.getTotalRevenueFromOrders());
-    }
-
-    @GetMapping("/AverageCompletionTime")
-    public ResponseEntity getAverageCompletionTime() {
-        return ResponseEntity.status(200).body(ordersService.getAverageCompletionTime());
-    }
-
     @GetMapping("/getOrdersByStudentId")
     public ResponseEntity getOrdersByStudentId(@AuthenticationPrincipal User user) {
         return ResponseEntity.status(200).body(ordersService.getOrdersByStudentId(user.getId()));
@@ -65,5 +56,9 @@ public class OrdersController {
         return ResponseEntity.status(200).body(ordersService.getMostExpensiveOrder());
     }
 
+    @GetMapping("/totalOrderPrice/{id}")
+    public ResponseEntity getTotalOrderPrice(@PathVariable Integer id) {
+        return ResponseEntity.status(200).body(ordersService.totalOrderPrice(id));
+    }
 
 }

@@ -1,12 +1,14 @@
 package com.example.wayz.Service;
 
 import com.example.wayz.Api.ApiException.ApiException;
+import com.example.wayz.DTO.OrderDTO;
 import com.example.wayz.Model.Orders;
 import com.example.wayz.Model.Student;
 import com.example.wayz.Repository.OrdersRepository;
 import com.example.wayz.Repository.StudentRepository;
 import com.example.wayz.Repository.StudentTripsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +26,13 @@ public class OrdersService {
         return ordersRepository.findAll();
     }
 
-    public void addOrders(Orders orders){
-        Student student = studentRepository.findStudentById(orders.getStudent().getId());
-        Integer tripsNum = studentTripsRepository.tripsNumber(orders.getStudent().getId());
+    public void addOrders(OrderDTO orders){
+        Student student = studentRepository.findStudentByuUser(orders.getStudent_id());
+        Integer tripsNum = studentTripsRepository.tripsNumber(orders.getStudent_id());
+        Integer g = 18;
+        Orders orders1 = new Orders(null,g,orders.getCreatedAt(),student);
         student.setTripsLeft(student.getTripsLeft()+tripsNum);
-        orders.setTripPrice(18);
-        ordersRepository.save(orders);
+        ordersRepository.save(orders1);
     }
 
     public double totalOrderPrice(Integer order_id){
@@ -45,7 +48,6 @@ public class OrdersService {
         if (orders1==null) {
             throw new ApiException("Order with ID " + id + " not found");
         }
-        orders1.setDays(orders.getDays());
         orders1.setTripPrice(orders.getTripPrice());
     }
 
@@ -63,31 +65,6 @@ public class OrdersService {
             throw new ApiException("ID Not Found");
         }
         return ordersRepository.findOrdersById(id);
-    }
-
-
-    // get total revenue from all orders
-    public Integer getTotalRevenueFromOrders() {
-        List<Orders> allOrders = ordersRepository.findAll();
-        Integer totalRevenue = 0;
-        for (Orders order : allOrders) {
-            totalRevenue += order.getTripPrice() * order.getDays();
-        }
-        return totalRevenue;
-    }
-
-
-    // get average completion time for orders
-    public Double getAverageCompletionTime() {
-        List<Orders> allOrders = ordersRepository.findAll();
-        if (allOrders.isEmpty()) {
-            return 0.0;
-        }
-        int totalDays = 0;
-        for (Orders order : allOrders) {
-            totalDays += order.getDays();
-        }
-        return (double) totalDays / allOrders.size();
     }
 
     // get orders by a specific student

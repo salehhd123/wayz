@@ -1,7 +1,9 @@
-package com.example.wayz.Model;
+package com.example.wayz.DTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -10,34 +12,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Orders {
+public class OrderDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer student_id;
 
     @NotNull(message = "Trip Price can't be empty")
     @Column(nullable = false)
     private Integer tripPrice;
 
-
+    @NotNull(message = "Days can't be empty")
+    @Column(nullable = false)
+    @Positive(message = "Days should be Numbers")
+    private Integer days;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP) // convert from database timestamp to java LocalDateTime
     private LocalDateTime createdAt;
-
-
-    @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "user_id")
-    @JsonIgnore
-    private Student student;
-
 }
