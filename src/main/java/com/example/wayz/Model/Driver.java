@@ -19,7 +19,7 @@ public class Driver {
     private Integer id;
 
     @Pattern(message = "the status must be one of `pending`, `approved`, `closed`. ", regexp = "(?i)\\b(pending|approved|closed)\\b?")
-    @Column(columnDefinition = "varchar(255) not null default 'pending' check (type in ('pending', 'approved', 'closed')) ")
+    @Column(columnDefinition = "varchar(255) not null default 'pending' check (status in ('pending', 'approved', 'closed')) ")
     private String status;
 
     @Column(columnDefinition = "varchar(255) unique not null")
