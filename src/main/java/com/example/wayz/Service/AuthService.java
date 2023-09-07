@@ -5,6 +5,7 @@ import com.example.wayz.DTO.StudentDTO;
 import com.example.wayz.Model.Driver;
 import com.example.wayz.Model.Student;
 import com.example.wayz.Model.User;
+import com.example.wayz.Repository.AuthRepository;
 import com.example.wayz.Repository.DriverRepository;
 import com.example.wayz.Repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ public class AuthService {
 
     private final StudentRepository studentRepository;
     private final DriverRepository driverRepository;
+    private final AuthRepository authRepository;
+
     public void registerStudent(StudentDTO studentDto){
         User user = new User(null,studentDto.getUsername(),studentDto.getPassword(),"STUDENT",null,null,null);
         Student student=new Student(null,studentDto.getName(),studentDto.getUniversity(),studentDto.getHomeGoogleMapUrl(),

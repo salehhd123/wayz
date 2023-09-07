@@ -29,8 +29,8 @@ public class ConfigurationSecurity {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http.csrf().disable()
                 .sessionManagement()
 
@@ -48,6 +48,8 @@ public class ConfigurationSecurity {
                 .invalidateHttpSession(true)
                 .and()
                 .httpBasic();
+
+
         return http.build();
 
     }
