@@ -37,6 +37,9 @@ public class Student {
     @Column(nullable = false)
     private Integer tripsLeft=0;
 
+    @Column(nullable = false)
+    private Double balance=0.0;
+
 
     @OneToOne
     @MapsId
