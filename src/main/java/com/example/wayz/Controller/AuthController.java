@@ -20,14 +20,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register/student")
-    public ResponseEntity registerStudent(@RequestBody @Valid StudentDTO studentDto){
+    public ResponseEntity<String> registerStudent(@RequestBody @Valid StudentDTO studentDto){
 
         authService.registerStudent(studentDto);
         return ResponseEntity.status(200).body("user registered");
     }
 
     @PostMapping("/register/driver")
-    public ResponseEntity registerDriver(@RequestBody @Valid DriverDTO driverDTO){
+    public ResponseEntity<String> registerDriver(@RequestBody @Valid DriverDTO driverDTO){
 
         authService.registerDriver(driverDTO);
         return ResponseEntity.status(200).body("user registered");
@@ -36,7 +36,7 @@ public class AuthController {
 
 
     @PostMapping("/logout")
-    public ResponseEntity logout(){
+    public ResponseEntity<String> logout(){
         return ResponseEntity.status(200).body("logout successfully");
     }
 
