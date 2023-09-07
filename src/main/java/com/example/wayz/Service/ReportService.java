@@ -50,24 +50,6 @@ public class ReportService {
     }
 
 
-    public void approveReport(Integer id , Integer report_id){
-        User admin = authRepository.findAdmin(id);
-        Report report = reportRepository.findReportById(report_id);
-        Driver driver = report.getDriver();
-        if (admin==null){
-            throw new ApiException("only admin can approve reports");
-        }
-        if(report==null){
-            throw new ApiException("Driver with ID " + report_id + " not found");
-        }
-        report.setStatus("approved");
-        reportRepository.save(report);
-        if (reportRepository.countApproved(report.getDriver().getUser().getId())==3){
-            driver.setStatus("fired");
-            driverRepository.save(driver);
-        }
-    }
-
     public void ignoreReport(Integer id , Integer report_id){
         User admin = authRepository.findAdmin(id);
         Report report = reportRepository.findReportById(report_id);
@@ -80,6 +62,24 @@ public class ReportService {
         report.setStatus("ignore");
         reportRepository.save(report);
     }
+    public void approveReport(Integer id , Integer report_id){
+        User admin = authRepository.findAdmin(id);
+        Report report = reportRepository.findReportById(report_id);
+        Driver driver1 = report.getDriver();
+        if (admin==null){
+            throw new ApiException("only admin can approve reports");
+        }
+        if(report==null){
+            throw new ApiException("Driver with ID " + report_id + " not found");
+        }
+        report.setStatus("approved");
+        reportRepository.save(report);
+        if (reportRepository.countApproved(driver1.getId())==3){
+            driver1.setStatus("fired");
+            driverRepository.save(driver1);
+        }
+    }
+
 
 
 
