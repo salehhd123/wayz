@@ -29,4 +29,7 @@ public interface StudentTripsRepository extends JpaRepository<StudentTrips,Integ
     @Query("select st from StudentTrips st where st.student.id = :studentId and lower(st.type) = lower(:type) ")
     List<StudentTrips> findTripsByStudentIdAndType(Integer studentId, String type);
 
+    @Query("select count (c) from StudentTrips c where c.student.id=?1 ")
+    Integer tripsNumber(Integer id);
+
 }

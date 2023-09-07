@@ -18,4 +18,5 @@ public interface OrdersRepository extends JpaRepository<Orders,Integer> {
     //method to find the most expensive order
     @Query("SELECT o FROM Orders o ORDER BY o.tripPrice DESC")
     List<Orders> findMostExpensiveOrder();
+
 }

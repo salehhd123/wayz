@@ -2,7 +2,10 @@ package com.example.wayz.Service;
 
 import com.example.wayz.Api.ApiException.ApiException;
 import com.example.wayz.Model.Orders;
+import com.example.wayz.Model.Student;
 import com.example.wayz.Repository.OrdersRepository;
+import com.example.wayz.Repository.StudentRepository;
+import com.example.wayz.Repository.StudentTripsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,8 @@ import java.util.List;
 public class OrdersService {
 
     private final OrdersRepository ordersRepository;
+    private final StudentTripsRepository studentTripsRepository;
+    private final StudentRepository studentRepository;
 
 
     public List<Orders> getAllOrders() {
@@ -20,10 +25,19 @@ public class OrdersService {
     }
 
     public void addOrders(Orders orders){
+        Student student = studentRepository.findStudentById(orders.getStudent().getId());
+        Integer tripsNum = studentTripsRepository.tripsNumber(orders.getStudent().getId());
+        student.setTripsLeft(student.getTripsLeft()+tripsNum);
+        orders.setTripPrice(18);
         ordersRepository.save(orders);
+    }
 
-
-
+    public double totalOrderPrice(Integer order_id){
+        Orders orders = ordersRepository.findOrdersById(order_id);
+        Student student=orders.getStudent();
+        Integer TripsNum= studentTripsRepository.tripsNumber(student.getId());
+        double total=orders.getTripPrice()*TripsNum;
+        return total;
     }
 
     public void updateOrders(Integer id,Orders orders){
