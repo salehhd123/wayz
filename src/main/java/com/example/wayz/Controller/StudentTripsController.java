@@ -56,15 +56,6 @@ public class StudentTripsController {
         return ResponseEntity.status(200).body(studentTripsService.getAverageTripsPerDay());
     }
 
-
-    @GetMapping("/by-date-range")
-    public ResponseEntity getTripsWithinDateRange(
-            @RequestParam String startDate,
-            @RequestParam String endDate)
-    {
-        return ResponseEntity.status(200).body(studentTripsService.getTripsWithinDateRange(startDate, endDate));
-    }
-
     @GetMapping("/TripsByStudentIdAndType/{studentId}/{type}")
     public ResponseEntity getTripsByStudentIdAndType(@PathVariable Integer studentId,@PathVariable String type ) {
         return ResponseEntity.status(200).body(studentTripsService.getTripsByStudentAndType(studentId,type));

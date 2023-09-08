@@ -20,13 +20,13 @@ public class StudentTripsService {
     }
 
     public void createStudentTrip(StudentTrips studentTrip) {
-         studentTripsRepository.save(studentTrip);
+        studentTripsRepository.save(studentTrip);
     }
 
     public void updateStudentTrip(Integer id, StudentTrips studentTrip) {
 
-        StudentTrips studentTrips=studentTripsRepository.findStudentTripsById(id);
-        if (studentTrips==null) {
+        StudentTrips studentTrips = studentTripsRepository.findStudentTripsById(id);
+        if (studentTrips == null) {
             throw new ApiException("Student Trips with ID " + id + " not found");
         }
         studentTrips.setDay(studentTrip.getDay());
@@ -35,8 +35,8 @@ public class StudentTripsService {
     }
 
     public void deleteStudentTrip(Integer id) {
-        StudentTrips studentTrips=studentTripsRepository.findStudentTripsById(id);
-        if (studentTrips==null){
+        StudentTrips studentTrips = studentTripsRepository.findStudentTripsById(id);
+        if (studentTrips == null) {
             throw new ApiException("Student Trips with ID " + id + " not found");
         }
         studentTripsRepository.deleteById(id);
@@ -52,15 +52,8 @@ public class StudentTripsService {
     }
 
 
-    public Double getAverageTripsPerDay(){
+    public Double getAverageTripsPerDay() {
         return studentTripsRepository.calculateAverageTripsPerDay();
-    }
-
-    public List<StudentTrips> getTripsWithinDateRange(String startDate, String endDate) {
-        LocalDateTime start = LocalDateTime.parse(startDate);
-        LocalDateTime end = LocalDateTime.parse(endDate);
-
-        return studentTripsRepository.findTripsWithinDateRange(start, end);
     }
 
     public List<StudentTrips> getTripsByStudentAndType(Integer studentId, String type) {

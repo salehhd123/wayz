@@ -13,7 +13,9 @@ import com.example.wayz.Repository.ReportRepository;
 import com.example.wayz.Repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -24,81 +26,72 @@ public class ReportService {
     private final StudentRepository studentRepository;
     private final DriverRepository driverRepository;
     private final AuthRepository authRepository;
+    private final FileService fileService;
 
-    public List<Report> getALlReport(){
+    public List<Report> getALlReport() {
         return reportRepository.findAll();
     }
 
 
-
-    public List<Report>getAllReportPending(){
-    return reportRepository.allPending();
+    public List<Report> getAllReportPending() {
+        return reportRepository.allPending();
     }
 
-    public void addReport(Integer user_id, Integer driver_id, ReportDto reportDto){
-        Student student= studentRepository.findStudentById(user_id);
-        Driver driver=driverRepository.findDriverById(driver_id);
-        if (driver== null){
+    public void addReport(Integer user_id, Integer driver_id, ReportDto reportDto, MultipartFile file) throws IOException, ApiException {
+        Student student = studentRepository.findStudentById(user_id);
+        Driver driver = driverRepository.findDriverById(driver_id);
+        if (driver == null) {
             throw new ApiException("Driver with ID " + driver_id + " not found");
         }
-        Report report = new Report(null,null, reportDto.getDescription(),"pending",student,driver);
-        reportRepository.save(report);
+
+        Report report = new Report(null, null, reportDto.getDescription(), "pending", student, driver);
+        report = reportRepository.save(report);
+
+        if (!file.isEmpty()) {
+            fileService.uploadReportMedia(file, report.getId());
+        }
+
     }
 
-    public void delete(Integer id){
-        Report report= reportRepository.findReportById(id);
-        if (report==null){
+    public void delete(Integer id) {
+        Report report = reportRepository.findReportById(id);
+        if (report == null) {
             throw new ApiException("you enter wrong id");
         }
         reportRepository.delete(report);
     }
 
 
-    public void ignoreReport(Integer id , Integer report_id){
+    public void ignoreReport(Integer id, Integer report_id) {
         User admin = authRepository.findAdmin(id);
         Report report = reportRepository.findReportById(report_id);
-        if (admin==null){
+        if (admin == null) {
             throw new ApiException("only admin can approve reports");
         }
-        if(report==null){
+        if (report == null) {
             throw new ApiException("Driver with ID " + report_id + " not found");
         }
         report.setStatus("ignore");
         reportRepository.save(report);
     }
-    public void approveReport(Integer id , Integer report_id){
+
+    public void approveReport(Integer id, Integer report_id) {
         User admin = authRepository.findAdmin(id);
         Report report = reportRepository.findReportById(report_id);
         Driver driver1 = report.getDriver();
-        if (admin==null){
+        if (admin == null) {
             throw new ApiException("only admin can approve reports");
         }
-        if(report==null){
+        if (report == null) {
             throw new ApiException("Driver with ID " + report_id + " not found");
         }
         report.setStatus("approved");
         reportRepository.save(report);
-        if (reportRepository.countApproved(driver1.getId())==3){
+        if (reportRepository.countApproved(driver1.getId()) == 3) {
             driver1.setStatus("fired");
             driverRepository.save(driver1);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

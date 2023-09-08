@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,39 +21,43 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping("/get-all")
-    public ResponseEntity getAll(){
+    public ResponseEntity getAll() {
         return ResponseEntity.status(200).body(reportService.getALlReport());
     }
 
     @GetMapping("/get-all-pending")
-    public ResponseEntity getPending(){
+    public ResponseEntity getPending() {
         return ResponseEntity.status(200).body(reportService.getAllReportPending());
     }
 
     @PostMapping("/add-report/{id}")
-    public ResponseEntity addReport(@AuthenticationPrincipal User user, @PathVariable Integer id, @RequestBody ReportDto reportDto){
-       reportService.addReport(user.getId(),id,reportDto);
+    public ResponseEntity addReport(
+            @AuthenticationPrincipal User user,
+            @PathVariable Integer id, @RequestBody ReportDto reportDto,
+            @RequestParam(value = "file", required = false) MultipartFile reportMedia) throws IOException {
+
+        reportService.addReport(user.getId(), id, reportDto, reportMedia);
         return ResponseEntity.status(200).body(new ApiResponse("the report added"));
     }
 
 
     @DeleteMapping("/delete-report/{id}")
-    public ResponseEntity deleteReport(Integer id){
+    public ResponseEntity deleteReport(Integer id) {
         reportService.delete(id);
         return ResponseEntity.status(200).body(new ApiResponse("the report deleted"));
     }
 
 
     @PutMapping("/ignore/{id}")
-        public ResponseEntity ignore(@AuthenticationPrincipal User user, @PathVariable Integer id) {
-        reportService.ignoreReport(user.getId(),id);
+    public ResponseEntity ignore(@AuthenticationPrincipal User user, @PathVariable Integer id) {
+        reportService.ignoreReport(user.getId(), id);
         return ResponseEntity.status(200).body(new ApiResponse("the report change to ignore"));
     }
 
 
     @PutMapping("/approve/{id}")
-    public ResponseEntity approve(@AuthenticationPrincipal User user, @PathVariable Integer id){
-        reportService.approveReport(user.getId(),id);
+    public ResponseEntity approve(@AuthenticationPrincipal User user, @PathVariable Integer id) {
+        reportService.approveReport(user.getId(), id);
         return ResponseEntity.status(200).body(new ApiResponse("the report change to approve"));
     }
 

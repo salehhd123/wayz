@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class FileService {
     public record FileInfoRecord(MediaType mediaType, byte[] data) {
     }
 
-    public Driver uploadDriverDocuments(HashMap<String, MultipartFile> driverDocsMap, Integer driverId) throws IOException, RuntimeException {
+    public void uploadDriverDocuments(HashMap<String, MultipartFile> driverDocsMap, Integer driverId) throws IOException, RuntimeException {
 
         Driver driver = driverRepository.findDriverById(driverId);
 
@@ -55,7 +56,7 @@ public class FileService {
                 throw new ApiException("There was a problem with file named: " + file.getOriginalFilename());
             }
 
-            file.transferTo(new File(fileLocation));
+            file.transferTo(new File(fileLocation + docType));
 
             int fileSizeInMb = Math.toIntExact((file.getSize() >> 20));
 
@@ -68,7 +69,6 @@ public class FileService {
         }
 
         driverRepository.save(driver);
-        return driver;
     }
 
     public void uploadReportMedia(MultipartFile file, Integer reportId) throws IOException, RuntimeException {
@@ -86,8 +86,9 @@ public class FileService {
         if (file.isEmpty()) {
             throw new ApiException("There was a problem with file named: " + file.getOriginalFilename());
         }
+        String fileRandomName = UUID.randomUUID().toString();
 
-        file.transferTo(new File(fileLocation));
+        file.transferTo(new File(fileLocation + fileRandomName));
 
         int fileSizeInMb = Math.toIntExact((file.getSize() >> 20));
 
@@ -96,8 +97,10 @@ public class FileService {
         uploadFile.setFileType(file.getContentType());
         uploadFile.setSize(fileSizeInMb > 0 ? fileSizeInMb : 1); //// if file is less than 1mb it'll be 0 after shifting so we'll just put 1mb as an approximation in that case.
         uploadFile.setUser(report.getStudent().getUser());
-        fileRepository.save(uploadFile);
 
+        report.setMedia(fileRandomName);
+
+        fileRepository.save(uploadFile);
         reportRepository.save(report);
     }
 
@@ -136,31 +139,15 @@ public class FileService {
 
     }
 
-//    public FileInfoRecord downloadFileByName(Integer userId, String fileName) throws IOException, RuntimeException {
-//
-//
-//        User user = userRepository.findUserById(userId);
-//
-//        MyFile downloadFile = fileRepository.findMyFileByFileNameAndUser(fileName, user);
-//
-//        if (downloadFile == null) throw new ApiException("This file does not exist");
-//
-//        String downloadFilePath = SERVER_FILES_FOLDER + user.getId() + "/" + downloadFile.getFileName();
-//
-//        byte[] file = Files.readAllBytes(new File(downloadFilePath).toPath());
-//
-//
-//        return new FileInfoRecord(MediaType.valueOf(downloadFile.getFileType()), file);
-//
-//    }
-
     public FileInfoRecord downloadDriverLicence(Integer driverId) throws IOException, RuntimeException {
 
         User user = userRepository.findUserById(driverId);
 
         MyFile downloadFile = fileRepository.findMyFileByFileNameAndUser("license", user);
 
-        if (downloadFile == null) throw new ApiException("This file does not exist");
+        if (downloadFile == null) {
+            throw new ApiException("This file does not exist");
+        }
 
         String downloadFilePath = SERVER_FILES_FOLDER + "driver_" + user.getId() + "/" + downloadFile.getFileName();
 
