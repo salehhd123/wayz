@@ -29,27 +29,15 @@ public class DriverTripsService {
 
     // for users with ADMIN
     public List<DriverTrips> findAll(String role) {
-        if(!role.equalsIgnoreCase("admin")) {
-            throw new ApiException("invalid role.");
-        }
-
         return driverTripsRepository.findAll();
     }
 
     // for users with DRIVER role
     public List<DriverTrips> findAllByDriverId(User user) {
-        if(!user.getRole().equalsIgnoreCase("driver")) {
-            throw new ApiException("invalid role.");
-        }
-
         return driverTripsRepository.findAllByDriverId(user.getId());
     }
 
     public HashMap<String, DriverTrips> addDriverTrip(User user, DriverTripDTO driverTripDTO) {
-        if(!user.getRole().equalsIgnoreCase("driver")) {
-            throw new ApiException("invalid role.");
-        }
-
         DriverTrips driverTrips = new DriverTrips();
 
         driverTrips.setUniversity(driverTripDTO.getUniversity());
@@ -86,10 +74,6 @@ public class DriverTripsService {
 
 
     public HashMap<String, Object> deleteDriverTrip(User user, Integer driverTripId) {
-        if(!user.getRole().equalsIgnoreCase("driver")) {
-            throw new ApiException("invalid role.");
-        }
-
         DriverTrips driverTrips = driverTripsRepository.findDriverTripsById(driverTripId);
 
         if(driverTrips == null) {
