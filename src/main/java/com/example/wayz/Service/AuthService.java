@@ -11,6 +11,10 @@ import com.example.wayz.Repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class AuthService {
     private final StudentRepository studentRepository;
     private final DriverRepository driverRepository;
     private final AuthRepository authRepository;
+    private final FileService fileService;
 
     public void registerStudent(StudentDTO studentDto){
         User user = new User(null,studentDto.getUsername(),studentDto.getPassword(),"STUDENT",null,null,null);
@@ -30,19 +35,29 @@ public class AuthService {
         studentRepository.save(student);
     }
 
-    public void registerDriver(DriverDTO driverDTO){
+    public void registerDriver(DriverDTO driverDTO, MultipartFile id, MultipartFile license, MultipartFile registration, MultipartFile pic) throws IOException {
         User user = new User(null,driverDTO.getUsername(),driverDTO.getPassword(),"DRIVER",null,null,null);
 //        Driver driver=new Driver(null,driverDTO.getStatus(),driverDTO.getDriverLicenceImgPath(),driverDTO.getCarRegistrationImgPath(),
 //                driverDTO.getDriverImgPath(), driverDTO.getGovIdImgPath(),user,null,null, null);
 
         Driver driver = new Driver();
-
         driver.setUser(user);
         driver.setStatus("pending");
         driver.setName(driverDTO.getName());
 
         String hash=new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(hash);
-        driverRepository.save(driver);
+        driver = driverRepository.save(driver); // make sure to get the ID
+
+
+        // save driver files.
+        HashMap<String, MultipartFile> files = new HashMap<>(4){{
+            put("id", id);
+            put("license", license);
+            put("registration", registration);
+            put("pic", pic);
+        }};
+
+        fileService.uploadDriverDocuments(files, driver.getId());
     }
 }
