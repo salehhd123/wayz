@@ -3,9 +3,11 @@ package com.example.wayz.Service;
 
 import com.example.wayz.Api.ApiException.ApiException;
 import com.example.wayz.DTO.StudentDTO;
+import com.example.wayz.Model.CreditCard;
 import com.example.wayz.Model.Student;
 import com.example.wayz.Model.User;
 import com.example.wayz.Repository.AuthRepository;
+import com.example.wayz.Repository.CreditCardRepository;
 import com.example.wayz.Repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentService {
     private final StudentRepository studentRepository;
-    private final AuthRepository authRepository;
+    private final CreditCardRepository creditCardRepository;
 
 
     public List<Student> getAllStudent(){
@@ -41,7 +43,5 @@ public class StudentService {
         }
         studentRepository.delete(student);
     }
-
-
 
 }
