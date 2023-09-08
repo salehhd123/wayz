@@ -17,7 +17,7 @@ public interface DriverTripsRepository extends JpaRepository<DriverTrips, Intege
     List<DriverTrips> findAllByDriverId(Integer driverId);
 
 
-    @Query("select c.driver, count (c) from driver_trips c order by count(c.driver.id) DESC limit 10")
+    @Query("select c.driver, count (c) as tripsCount from driver_trips c order by count(c.driver.id) DESC limit 10")
     List<TopDrivers> findTheMostDriver();
 
 
