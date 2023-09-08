@@ -2,6 +2,7 @@ package com.example.wayz.Controller;
 
 import com.example.wayz.DTO.DriverTripDTO;
 import com.example.wayz.Model.DriverTrips;
+import com.example.wayz.Model.TopDrivers;
 import com.example.wayz.Model.User;
 import com.example.wayz.Service.DriverTripsService;
 import com.example.wayz.Utils.TimeRange;
@@ -54,6 +55,12 @@ public class DriverTripsController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HashMap<String, Object>> deleteDriverTrip(@AuthenticationPrincipal User user, @PathVariable Integer id) {
         return ResponseEntity.ok(driverTripsService.deleteDriverTrip(user, id));
+    }
+
+
+    @GetMapping("/top-three")
+    public ResponseEntity<List<TopDrivers>> topThreeDriver() {
+        return ResponseEntity.ok(driverTripsService.getTopDrivers());
     }
 
 }
