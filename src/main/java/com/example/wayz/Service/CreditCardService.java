@@ -20,9 +20,10 @@ public class CreditCardService {
 
     public void addCard(Integer id, CreditCardDto creditCardDto){
         Student student1 = studentRepository.findStudentById(id);
+
         CreditCard creditCard = new CreditCard(null,creditCardDto.getNumber(),creditCardDto.getName(),creditCardDto.getCcv(),student1);
-        String hash=new BCryptPasswordEncoder().encode(creditCard.getNumber());
-        creditCard.setNumber(hash);
+        String hash=new BCryptPasswordEncoder().encode(creditCard.getCcv());
+        creditCard.setCcv(hash);
         creditCardRepository.save(creditCard);
     }
 
@@ -32,9 +33,6 @@ public class CreditCardService {
             throw new ApiException("not found");
         }
         Student student = studentRepository.findStudentById(id);
-        if (student==null){
-            throw new ApiException("not found");
-        }
         student.setBalance(student.getBalance()+amount);
         studentRepository.save(student);
     }

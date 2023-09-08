@@ -22,14 +22,14 @@ public class OrderDTO {
 
     private Integer student_id;
 
+    @NotNull(message = "Number of Trips can not be empty")
+    @Column(nullable = false)
+    private Integer numberTrips;
+
     @NotNull(message = "Trip Price can't be empty")
     @Column(nullable = false)
     private Integer tripPrice;
 
-    @NotNull(message = "Days can't be empty")
-    @Column(nullable = false)
-    @Positive(message = "Days should be Numbers")
-    private Integer days;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP) // convert from database timestamp to java LocalDateTime

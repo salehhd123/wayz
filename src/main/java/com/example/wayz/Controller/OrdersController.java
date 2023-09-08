@@ -24,8 +24,8 @@ public class OrdersController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity addOrder(@RequestBody OrderDTO orders) {
-        ordersService.addOrders(orders);
+    public ResponseEntity addOrder(@AuthenticationPrincipal User user,@RequestBody OrderDTO orders) {
+        ordersService.addOrders(user.getId(), orders);
         return ResponseEntity.status(200).body("Order added successfully");
     }
 
