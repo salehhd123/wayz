@@ -22,26 +22,17 @@ public class DriverTrips {
     private Integer id;
 
 
-    @NotNull(message = "day field is required.")
-    @Min(value = 1, message = "the day can only be from 1 to 5 where 1 = Sunday, 2 = Monday, 3 = Tuesday etc...")
-    @Max(value = 5, message = "the day can only be from 1 to 5 where 1 = Sunday, 2 = Monday, 3 = Tuesday etc...")
-    @Column(nullable = false)
-    private Integer day;
-
-    @NotEmpty(message = "type field is required.")
-    @Pattern(message = "the type can only be `going`, `return`.", regexp = "(?i)\\b(going|return)\\b?")
-    @Column(columnDefinition = "varchar(255) not null check (type in ('going', 'return')) ")
-    private String type;
-
     @NotEmpty(message = "university field is required.")
     private String university;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime time;
 
-    @NotEmpty(message = "pickup location field is required.")
-    @Column(nullable = false)
-    private String pickupLocation;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime startTime;
+
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime endTime;
+
 
     // Relation
 

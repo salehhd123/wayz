@@ -49,4 +49,11 @@ public class DriverTripsController {
     public ResponseEntity<HashMap<String, DriverTrips>> createDriverTrip(@AuthenticationPrincipal User user, @RequestBody @Valid DriverTripDTO driverTripDTO) {
         return ResponseEntity.ok(driverTripsService.addDriverTrip(user, driverTripDTO));
     }
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HashMap<String, Object>> deleteDriverTrip(@AuthenticationPrincipal User user, @PathVariable Integer id) {
+        return ResponseEntity.ok(driverTripsService.deleteDriverTrip(user, id));
+    }
+
 }
