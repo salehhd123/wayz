@@ -11,12 +11,12 @@ import java.util.List;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report,Integer> {
-Report findReportById(Integer id);
+    Report findReportById(Integer id);
 
-@Query("select count (c) from report c where c.driver.id=?1 and c.status='approved'")
-Integer countApproved(Integer id);
+    @Query("select count (c) from report c where c.driver.id=?1 and c.status='approved'")
+    Integer countApproved(Integer id);
 
-@Query("select c from report c where c.status='pending'")
+    @Query("select c from report c where c.status='pending'")
     List<Report> allPending();
 
 

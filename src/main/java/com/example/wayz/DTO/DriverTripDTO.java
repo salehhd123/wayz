@@ -15,23 +15,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class DriverTripDTO {
 
-    @NotNull(message = "day field is required.")
-    @Min(value = 1, message = "the day can only be from 1 to 5 where 1 = Sunday, 2 = Monday, 3 = Tuesday etc...")
-    @Max(value = 5, message = "the day can only be from 1 to 5 where 1 = Sunday, 2 = Monday, 3 = Tuesday etc...")
-    private Integer day;
-
-
-    @NotEmpty(message = "type field is required.")
-    @Pattern(message = "the type can only be `going`, `return`.", regexp = "(?i)\\b(going|return)\\b?")
-    private String type;
-
-
     @NotEmpty(message = "university field is required.")
     private String university;
 
-    private LocalDateTime time;
 
-    @NotEmpty(message = "pickup location field is required.")
-    private String pickupLocation;
+    @NotEmpty(message = "shift field is required.")
+    private String shift;
+
+
+    @Min(value = 0, message = "the trip index must be 0, 1, 2.")
+    @Max(value = 2, message = "the trip index must be 0, 1, 2.")
+    private int tripIndex;
+
 
 }
