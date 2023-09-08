@@ -22,14 +22,15 @@ public class DriverDTO {
     @NotEmpty(message = "the password field is required.")
     private String password;
 
-    @Pattern(message = "the status must be one of `pending`, `approved`, `closed`. ", regexp = "(?i)\\b(pending|approved|closed)\\b?")
-    private String status;
+    @NotEmpty(message = "the name field is required.")
+    private String name;
 
-    private String driverLicenceImgPath;
 
-    private String carRegistrationImgPath;
-
-    private String driverImgPath;
-
-    private String govIdImgPath;
+//    private String driverLicenceImgPath;
+//
+//    private String carRegistrationImgPath;
+//
+//    private String driverImgPath;
+//
+//    private String govIdImgPath;
 }
