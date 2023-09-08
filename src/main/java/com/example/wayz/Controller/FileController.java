@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("api/v1/files")
+@RequestMapping("/api/v1/files")
 @RequiredArgsConstructor
 public class FileController {
 
@@ -21,7 +21,7 @@ public class FileController {
 
 
     // * for admins only *//
-    @GetMapping("/get-driver-files{studentId}")
+    @GetMapping("/get-reports-files{studentId}")
     public ResponseEntity<ApiResponse<?>> getAllStudentReportMedia(@PathVariable Integer studentId) {
 
         return ResponseEntity.ok(new ApiResponse<>(fileService.getAllStudentReportsMedia(studentId)));
@@ -45,7 +45,7 @@ public class FileController {
 
 
     // * for admins only *//
-    @GetMapping("/download-by-name/{driverId}")
+    @GetMapping("/download-id/{driverId}")
     public ResponseEntity<?> downloadDriverId(@PathVariable Integer driverId) throws IOException {
 
         var file = fileService.downloadDriverId(driverId);
@@ -53,16 +53,15 @@ public class FileController {
     }
 
     // * for admins only *//
-    @GetMapping("/download-by-name/{driverId}")
+    @GetMapping("/download-pic/{driverId}")
     public ResponseEntity<?> downloadDriverPic(@PathVariable Integer driverId) throws IOException {
 
         var file = fileService.downloadDriverPic(driverId);
         return ResponseEntity.status(HttpStatus.OK).contentType(file.mediaType()).body(file.data());
     }
 
-    @GetMapping("/download-by-name/{driverId}")
+    @GetMapping("/download-registration/{driverId}")
     public ResponseEntity<?> downloadDriverRegistration(@PathVariable Integer driverId) throws IOException {
-
         var file = fileService.downloadDriverRegistration(driverId);
         return ResponseEntity.status(HttpStatus.OK).contentType(file.mediaType()).body(file.data());
     }
