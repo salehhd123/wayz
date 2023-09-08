@@ -24,10 +24,14 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+
+    @NotNull(message = "Number of Trips can not be empty")
+    @Column(nullable = false)
+    private Integer numberTrips;
+
     @NotNull(message = "Trip Price can't be empty")
     @Column(nullable = false)
     private Integer tripPrice;
-
 
 
     @CreationTimestamp

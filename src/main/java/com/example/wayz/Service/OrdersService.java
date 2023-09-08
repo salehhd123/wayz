@@ -26,20 +26,18 @@ public class OrdersService {
         return ordersRepository.findAll();
     }
 
-    public void addOrders(OrderDTO orders){
-        Student student = studentRepository.findStudentByuUser(orders.getStudent_id());
-        Integer tripsNum = studentTripsRepository.tripsNumber(orders.getStudent_id());
-        Integer g = 18;
-        Orders orders1 = new Orders(null,g,orders.getCreatedAt(),student);
-        student.setTripsLeft(student.getTripsLeft()+tripsNum);
+    public void addOrders(Integer id,OrderDTO orders){
+        Student student = studentRepository.findStudentByuUser(id);
+        Orders orders1 = new Orders(null,orders.getNumberTrips(),18,orders.getCreatedAt(),student);
+        if(orders1.getTripPrice()*orders1.getNumberTrips()<=student.getBalance()){
+            throw new ApiException("sorry you do not have enough money !");
+        }
         ordersRepository.save(orders1);
     }
 
     public double totalOrderPrice(Integer order_id){
         Orders orders = ordersRepository.findOrdersById(order_id);
-        Student student=orders.getStudent();
-        Integer TripsNum= studentTripsRepository.tripsNumber(student.getId());
-        double total=orders.getTripPrice()*TripsNum;
+        double total=orders.getTripPrice()*orders.getNumberTrips();
         return total;
     }
 
