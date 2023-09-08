@@ -10,7 +10,6 @@ import com.example.wayz.Repository.DriverRepository;
 import com.example.wayz.Repository.FileRepository;
 import com.example.wayz.Repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +34,7 @@ public class FileService {
     private final String SERVER_FILES_FOLDER = "C:/Users/isaud/IdeaProjects/System/src/main/resources/users_files/";
 
     //// record to put the file info and the file itself in one place I think it's more readable this way, plus we can return both from a function.
-    public record FileInfoRecord(MediaType docType, byte[] data) {
+    public record FileInfoRecord(MediaType mediaType, byte[] data) {
     }
 
     public Driver uploadDriverDocuments(HashMap<String, MultipartFile> driverDocsMap, Integer driverId) throws IOException, RuntimeException {
@@ -102,9 +101,9 @@ public class FileService {
         reportRepository.save(report);
     }
 
-    public List<MyFile> getMyFiles(Integer userId) throws RuntimeException {
+    public List<MyFile> getAllStudentReportsMedia(Integer studentId) throws RuntimeException {
 
-        User filesOwner = userRepository.findUserById(userId);
+        User filesOwner = userRepository.findUserById(studentId);
 
         List<MyFile> userFilesList = fileRepository.findAllByUser(filesOwner);
 
@@ -115,11 +114,11 @@ public class FileService {
         return userFilesList;
     }
 
-    public FileInfoRecord downloadFileById(Integer userId, Integer fileID) throws IOException, RuntimeException {
+    public FileInfoRecord downloadFileById(Integer studentId, Integer fileID) throws IOException, ApiException {
 
 
         ///// doing this way allows us to prevent any unwanted access to any user's files since this token is generated and given everytime the user login to their account.
-        User user = userRepository.findUserById(userId);
+        User user = userRepository.findUserById(studentId);
 
 
         MyFile downloadFile = fileRepository.findMyFileByIdAndUser(fileID, user);
@@ -129,7 +128,7 @@ public class FileService {
 
         }
 
-        String downloadFilePath = SERVER_FILES_FOLDER + user.getId() + "/" + downloadFile.getFileName();
+        String downloadFilePath = SERVER_FILES_FOLDER + "student_" + +user.getId() + "/" + downloadFile.getFileName();
 
         byte[] file = Files.readAllBytes(new File(downloadFilePath).toPath());
 
@@ -137,16 +136,90 @@ public class FileService {
 
     }
 
-    public FileInfoRecord downloadFileByName(Integer userId, String fileName) throws IOException, RuntimeException {
+//    public FileInfoRecord downloadFileByName(Integer userId, String fileName) throws IOException, RuntimeException {
+//
+//
+//        User user = userRepository.findUserById(userId);
+//
+//        MyFile downloadFile = fileRepository.findMyFileByFileNameAndUser(fileName, user);
+//
+//        if (downloadFile == null) throw new ApiException("This file does not exist");
+//
+//        String downloadFilePath = SERVER_FILES_FOLDER + user.getId() + "/" + downloadFile.getFileName();
+//
+//        byte[] file = Files.readAllBytes(new File(downloadFilePath).toPath());
+//
+//
+//        return new FileInfoRecord(MediaType.valueOf(downloadFile.getFileType()), file);
+//
+//    }
+
+    public FileInfoRecord downloadDriverLicence(Integer driverId) throws IOException, RuntimeException {
+
+        User user = userRepository.findUserById(driverId);
+
+        MyFile downloadFile = fileRepository.findMyFileByFileNameAndUser("license", user);
+
+        if (downloadFile == null) throw new ApiException("This file does not exist");
+
+        String downloadFilePath = SERVER_FILES_FOLDER + "driver_" + user.getId() + "/" + downloadFile.getFileName();
+
+        byte[] file = Files.readAllBytes(new File(downloadFilePath).toPath());
 
 
-        User user = userRepository.findUserById(userId);
+        return new FileInfoRecord(MediaType.valueOf(downloadFile.getFileType()), file);
 
-        MyFile downloadFile = fileRepository.findMyFileByFileNameAndUser(fileName, user);
+    }
 
-        if (downloadFile == null) throw new RuntimeException();
+    public FileInfoRecord downloadDriverId(Integer driverId) throws IOException, RuntimeException {
 
-        String downloadFilePath = SERVER_FILES_FOLDER + user.getId() + "/" + downloadFile.getFileName();
+        User user = userRepository.findUserById(driverId);
+
+        MyFile downloadFile = fileRepository.findMyFileByFileNameAndUser("id", user);
+
+        if (downloadFile == null) {
+            throw new ApiException("This file does not exist");
+        }
+
+        String downloadFilePath = SERVER_FILES_FOLDER + "driver_" + user.getId() + "/" + downloadFile.getFileName();
+
+        byte[] file = Files.readAllBytes(new File(downloadFilePath).toPath());
+
+
+        return new FileInfoRecord(MediaType.valueOf(downloadFile.getFileType()), file);
+
+    }
+
+    public FileInfoRecord downloadDriverRegistration(Integer driverId) throws IOException, RuntimeException {
+
+        User user = userRepository.findUserById(driverId);
+
+        MyFile downloadFile = fileRepository.findMyFileByFileNameAndUser("registration", user);
+
+        if (downloadFile == null) {
+            throw new ApiException("This file does not exist");
+        }
+
+        String downloadFilePath = SERVER_FILES_FOLDER + "driver_" + user.getId() + "/" + downloadFile.getFileName();
+
+        byte[] file = Files.readAllBytes(new File(downloadFilePath).toPath());
+
+
+        return new FileInfoRecord(MediaType.valueOf(downloadFile.getFileType()), file);
+
+    }
+
+    public FileInfoRecord downloadDriverPic(Integer driverId) throws IOException, RuntimeException {
+
+        User user = userRepository.findUserById(driverId);
+
+        MyFile downloadFile = fileRepository.findMyFileByFileNameAndUser("pic", user);
+
+        if (downloadFile == null) {
+            throw new ApiException("This file does not exist");
+        }
+
+        String downloadFilePath = SERVER_FILES_FOLDER + "driver_" + user.getId() + "/" + downloadFile.getFileName();
 
         byte[] file = Files.readAllBytes(new File(downloadFilePath).toPath());
 
