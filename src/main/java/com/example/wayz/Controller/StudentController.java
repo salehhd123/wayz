@@ -1,10 +1,13 @@
 package com.example.wayz.Controller;
 
+import com.example.wayz.Api.ApiResponse.ApiResponse;
 import com.example.wayz.DTO.StudentDTO;
+import com.example.wayz.Model.User;
 import com.example.wayz.Service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,5 +34,7 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.status(200).body("Student deleted successfully");
     }
+
+
 
 }

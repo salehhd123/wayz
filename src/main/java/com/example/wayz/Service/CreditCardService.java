@@ -1,6 +1,7 @@
 package com.example.wayz.Service;
 
 
+import com.example.wayz.Api.ApiException.ApiException;
 import com.example.wayz.DTO.CreditCardDto;
 import com.example.wayz.Model.CreditCard;
 import com.example.wayz.Model.Student;
@@ -25,6 +26,18 @@ public class CreditCardService {
         creditCardRepository.save(creditCard);
     }
 
+    public void addMoney(Integer id,Integer amount){
+        CreditCard creditCard = creditCardRepository.findCreditCardById(id);
+        if (creditCard==null){
+            throw new ApiException("not found");
+        }
+        Student student = studentRepository.findStudentById(id);
+        if (student==null){
+            throw new ApiException("not found");
+        }
+        student.setBalance(student.getBalance()+amount);
+        studentRepository.save(student);
+    }
 
 
 }

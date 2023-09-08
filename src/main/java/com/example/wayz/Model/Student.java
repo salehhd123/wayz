@@ -38,7 +38,7 @@ public class Student {
     private Integer tripsLeft=0;
 
     @Column(nullable = false)
-    private Double balance=0.0;
+    private Integer balance=0;
 
 
     @OneToOne
