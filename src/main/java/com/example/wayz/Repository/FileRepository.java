@@ -12,15 +12,10 @@ public interface FileRepository extends JpaRepository<MyFile, Integer> {
 
     List<MyFile> findAllByUser(User user);
 
-    List<MyFile> findAllBySizeAfterAndUser(Integer size, User user);
-
-    List<MyFile> findAllBySizeBeforeAndUser(Integer size, User user);
-
-
     MyFile findMyFileByFileNameAndUser(String filename, User user);
 
     MyFile findMyFileByIdAndUser(Integer fileId, User user);
 
-    List<MyFile> getAllByFileTypeContainingIgnoreCaseAndUser(String mediaType, User user);
+//    List<MyFile> getAllByFileTypeContainingIgnoreCaseAndUser(String mediaType, User user);
 
 }
