@@ -1,9 +1,14 @@
 package com.example.wayz.Service;
 
+import com.example.wayz.Api.ApiException.ApiException;
+import com.example.wayz.Model.Driver;
 import com.example.wayz.Model.MyFile;
+import com.example.wayz.Model.Report;
 import com.example.wayz.Model.User;
 import com.example.wayz.Repository.AuthRepository;
+import com.example.wayz.Repository.DriverRepository;
 import com.example.wayz.Repository.FileRepository;
+import com.example.wayz.Repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.http.MediaType;
@@ -14,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -23,46 +29,77 @@ public class FileService {
 
     private final FileRepository fileRepository;
     private final AuthRepository userRepository;
+    private final DriverRepository driverRepository;
+    private final ReportRepository reportRepository;
 
     private final String SERVER_FILES_FOLDER = "C:/Users/isaud/IdeaProjects/System/src/main/resources/users_files/";
 
     //// record to put the file info and the file itself in one place I think it's more readable this way, plus we can return both from a function.
-    public record FileInfoRecord(MediaType mediaType, byte[] data) {
+    public record FileInfoRecord(MediaType docType, byte[] data) {
     }
 
-    public String uploadFile(MultipartFile file, Integer userId) throws IOException, RuntimeException {
+    public Driver uploadDriverDocuments(HashMap<String, MultipartFile> driverDocsMap, Integer driverId) throws IOException, RuntimeException {
 
-        if (file.isEmpty()) throw new RuntimeException();
+        Driver driver = driverRepository.findDriverById(driverId);
 
+        if (driver == null) {
+            throw new ApiException("Could not find a driver with this id.");
+        }
+        String fileLocation = SERVER_FILES_FOLDER + "driver_" + driver.getId() + "/";
 
-        ////// we'll make a directory for each user in our Server and store whatever we need to retrieve x file in the database, this way is way faster than storing the files in the db as BLOB.
-        User user = userRepository.findUserById(userId);
+        Files.createDirectories(Paths.get(fileLocation));
 
-        String fileLocation = SERVER_FILES_FOLDER + user.getId() + "/" + file.getOriginalFilename();
+        for (String docType : driverDocsMap.keySet()) {
+
+            MultipartFile file = driverDocsMap.get(docType);
+            if (file.isEmpty()) {
+                throw new ApiException("There was a problem with file named: " + file.getOriginalFilename());
+            }
+
+            file.transferTo(new File(fileLocation));
+
+            int fileSizeInMb = Math.toIntExact((file.getSize() >> 20));
+
+            MyFile uploadFile = new MyFile();
+            uploadFile.setFileName(docType);
+            uploadFile.setFileType(file.getContentType());
+            uploadFile.setSize(fileSizeInMb > 0 ? fileSizeInMb : 1); //// if file is less than 1mb it'll be 0 after shifting so we'll just put 1mb as an approximation in that case.
+            uploadFile.setUser(driver.getUser());
+            fileRepository.save(uploadFile);
+        }
+
+        driverRepository.save(driver);
+        return driver;
+    }
+
+    public void uploadReportMedia(MultipartFile file, Integer reportId) throws IOException, RuntimeException {
+
+        Report report = reportRepository.findReportById(reportId);
+
+        if (report == null) {
+            throw new ApiException("Could not find a driver with this id.");
+        }
+        String fileLocation = SERVER_FILES_FOLDER + "student_" + report.getStudent().getUser().getId() + "/";
 
         Files.createDirectories(Paths.get(fileLocation));
 
 
+        if (file.isEmpty()) {
+            throw new ApiException("There was a problem with file named: " + file.getOriginalFilename());
+        }
+
         file.transferTo(new File(fileLocation));
 
-        int fileSizeInMb = Math.toIntExact((file.getSize() >> 20)); //// converting bytes to mbs by bit shifting instead of dividing
+        int fileSizeInMb = Math.toIntExact((file.getSize() >> 20));
 
         MyFile uploadFile = new MyFile();
         uploadFile.setFileName(file.getOriginalFilename());
         uploadFile.setFileType(file.getContentType());
         uploadFile.setSize(fileSizeInMb > 0 ? fileSizeInMb : 1); //// if file is less than 1mb it'll be 0 after shifting so we'll just put 1mb as an approximation in that case.
-        uploadFile.setUser(user);
-
+        uploadFile.setUser(report.getStudent().getUser());
         fileRepository.save(uploadFile);
 
-        return "File named " + file.getOriginalFilename() + " uploaded successfully !";
-    }
-
-
-    public void deleteUserFiles(Integer userId) throws IOException {
-
-        FileUtils.deleteDirectory(new File(SERVER_FILES_FOLDER + userId));
-
+        reportRepository.save(report);
     }
 
     public List<MyFile> getMyFiles(Integer userId) throws RuntimeException {
@@ -71,19 +108,10 @@ public class FileService {
 
         List<MyFile> userFilesList = fileRepository.findAllByUser(filesOwner);
 
-        if (userFilesList.isEmpty()) throw new RuntimeException();
+        if (userFilesList.isEmpty()) {
 
-        return userFilesList;
-    }
-
-    public List<MyFile> getMyFilesByType(Integer userId, String mediaType) throws RuntimeException {
-
-        User filesOwner = userRepository.findUserById(userId);
-
-        List<MyFile> userFilesList = fileRepository.getAllByFileTypeContainingIgnoreCaseAndUser(mediaType, filesOwner);
-
-        if (userFilesList.isEmpty()) throw new RuntimeException();
-
+            throw new ApiException("You have no files yet.");
+        }
         return userFilesList;
     }
 
@@ -96,7 +124,10 @@ public class FileService {
 
         MyFile downloadFile = fileRepository.findMyFileByIdAndUser(fileID, user);
 
-        if (downloadFile == null) throw new RuntimeException();
+        if (downloadFile == null) {
+            throw new ApiException("There was a problem with the file");
+
+        }
 
         String downloadFilePath = SERVER_FILES_FOLDER + user.getId() + "/" + downloadFile.getFileName();
 
@@ -123,28 +154,4 @@ public class FileService {
         return new FileInfoRecord(MediaType.valueOf(downloadFile.getFileType()), file);
 
     }
-
-    public List<MyFile> getMyFilesBiggerThan(Integer userId, Integer size) throws RuntimeException {
-
-        ///// doing this way allows us to prevent any unwanted access to any user's files since this token is generated and given everytime the user login to their account.
-        User filesOwner = userRepository.findUserById(userId);
-
-
-        List<MyFile> userFilesList = fileRepository.findAllBySizeAfterAndUser(size, filesOwner);
-        if (userFilesList.isEmpty()) throw new RuntimeException();
-
-        return userFilesList;
-    }
-
-    public List<MyFile> getMyFilesLessThan(Integer userId, Integer size) throws RuntimeException {
-
-        ///// doing this way allows us to prevent any unwanted access to any user's files since this token is generated and given everytime the user login to their account.
-        User filesOwner = userRepository.findUserById(userId);
-
-        List<MyFile> userFilesList = fileRepository.findAllBySizeBeforeAndUser(size, filesOwner);
-        if (userFilesList.isEmpty()) throw new RuntimeException();
-
-        return userFilesList;
-    }
-
 }
