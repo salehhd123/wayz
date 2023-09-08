@@ -59,7 +59,7 @@ public class DriverTripsController {
 
 
     @GetMapping("/top-three")
-    public ResponseEntity<List<TopDrivers>> topThreeDriver() {
+    public ResponseEntity topThreeDriver() {
         return ResponseEntity.ok(driverTripsService.getTopDrivers());
     }
 

@@ -3,6 +3,7 @@ package com.example.wayz.Service;
 import com.example.wayz.Api.ApiException.ApiException;
 import com.example.wayz.DTO.DriverDTO;
 import com.example.wayz.DTO.DriverTripDTO;
+import com.example.wayz.Model.Driver;
 import com.example.wayz.Model.DriverTrips;
 import com.example.wayz.Model.TopDrivers;
 import com.example.wayz.Model.User;
@@ -150,7 +151,7 @@ public class DriverTripsService {
         // 18:00 - 20:30
     }
 
-    public List<TopDrivers> getTopDrivers(){
+    public List<Driver> getTopDrivers(){
        return driverTripsRepository.findTheMostDriver();
 
     }
