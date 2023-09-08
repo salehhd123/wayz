@@ -151,8 +151,7 @@ public class DriverTripsService {
         // 18:00 - 20:30
     }
 
-    public List<Driver> getTopDrivers(){
+    public List<String> getTopDrivers(){
        return driverTripsRepository.findTheMostDriver();
-
     }
 }
