@@ -57,17 +57,3 @@ class AuthRepositoryTest {
     }
 
 }
-//class AuthRepositoryTest {
-//
-//    @Test
-//    void findUserByUsername() {
-//    }
-//
-//    @Test
-//    void findUserById() {
-//    }
-//
-//    @Test
-//    void findAdmin() {
-//    }
-//}
