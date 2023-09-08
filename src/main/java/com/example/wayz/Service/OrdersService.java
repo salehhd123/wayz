@@ -8,7 +8,6 @@ import com.example.wayz.Repository.OrdersRepository;
 import com.example.wayz.Repository.StudentRepository;
 import com.example.wayz.Repository.StudentTripsRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class OrdersService {
     }
 
     public void addOrders(Integer id,OrderDTO orders){
-        Student student = studentRepository.findStudentByuUser(id);
+        Student student = studentRepository.findStudentByUserId(id);
         Orders orders1 = new Orders(null,orders.getNumberTrips(),18,orders.getCreatedAt(),student);
         if(orders1.getTripPrice()*orders1.getNumberTrips()<=student.getBalance()){
             throw new ApiException("sorry you do not have enough money !");
