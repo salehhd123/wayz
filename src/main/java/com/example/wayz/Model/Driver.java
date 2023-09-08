@@ -2,6 +2,8 @@ package com.example.wayz.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
@@ -18,6 +20,10 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotEmpty(message = "Name cannot be empty")
+    @Column(columnDefinition = "varchar(255) not null")
+    private String name;
+
     @Pattern(message = "the status must be one of `pending`, `approved`, `closed`. ", regexp = "(?i)\\b(pending|approved|closed)\\b?")
     @Column(columnDefinition = "varchar(255) not null default 'pending' check (status in ('pending', 'approved', 'closed')) ")
     private String status;
@@ -33,6 +39,9 @@ public class Driver {
 
     @Column(columnDefinition = "varchar(255) unique not null")
     private String govIdImgPath;
+
+    @Column(columnDefinition = "int not null default 0")
+    private Integer unCashedTrips;
 
 
     @OneToOne
