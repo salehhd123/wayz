@@ -5,12 +5,18 @@
 - **A**bdullah ([Github](https://github.com/W2AlharbiMe), [Linkedin](https://www.linkedin.com/in/abdullah-alharbi-software-engineer/))
 
 # Wayz Application Backed by By Team 4 (SSBA)
+This project aim is to solve university students transport problems.
 
-this is project is built using:
+This is project is built using:
 
 - Java
 - Spring Boot (REST)
+- Spring Security
+- JPA Hibernate
+- Lombok
+- Swagger
 - MySQL
+
 
 in 4 days:
 - [x] ALL KINDS OF RELATIONS: OneToOne, OneToMany, ManyToMany. 
