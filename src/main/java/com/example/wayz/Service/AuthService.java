@@ -8,6 +8,7 @@ import com.example.wayz.Model.User;
 import com.example.wayz.Repository.AuthRepository;
 import com.example.wayz.Repository.DriverRepository;
 import com.example.wayz.Repository.StudentRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,13 @@ public class AuthService {
         studentRepository.save(student);
     }
 
-    public void registerDriver(DriverDTO driverDTO, MultipartFile id, MultipartFile license, MultipartFile registration, MultipartFile pic) throws IOException {
+    public void registerDriver(String data, MultipartFile id, MultipartFile license, MultipartFile registration, MultipartFile pic) throws IOException {
+
+        DriverDTO driverDTO = new ObjectMapper().convertValue(data, DriverDTO.class);
+
         User user = new User(null, driverDTO.getUsername(), driverDTO.getPassword(), "DRIVER", null, null, null);
-//        Driver driver=new Driver(null,driverDTO.getStatus(),driverDTO.getDriverLicenceImgPath(),driverDTO.getCarRegistrationImgPath(),
-//                driverDTO.getDriverImgPath(), driverDTO.getGovIdImgPath(),user,null,null, null);
+
+        authRepository.save(user);
 
         Driver driver = new Driver();
         driver.setUser(user);
@@ -59,5 +63,7 @@ public class AuthService {
         }};
 
         fileService.uploadDriverDocuments(files, driver.getId());
+
+//        {"name":"abdullah", "password": "12345678910@nN", "username": "0512263921"}
     }
 }

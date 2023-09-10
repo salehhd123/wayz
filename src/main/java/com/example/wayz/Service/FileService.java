@@ -32,7 +32,9 @@ public class FileService {
     private final DriverRepository driverRepository;
     private final ReportRepository reportRepository;
 
-    private final String SERVER_FILES_FOLDER = "C:/Users/isaud/IdeaProjects/System/src/main/resources/users_files/";
+//    private final String SERVER_FILES_FOLDER = "C:/Users/isaud/IdeaProjects/System/src/main/resources/users_files/";
+
+    private final String SERVER_FILES_FOLDER = "/home/alharbi/projects/toys/wayz/src/main/resources/users_files/";
 
     //// record to put the file info and the file itself in one place I think it's more readable this way, plus we can return both from a function.
     public record FileInfoRecord(MediaType mediaType, byte[] data) {
