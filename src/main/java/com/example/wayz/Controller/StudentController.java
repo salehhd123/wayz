@@ -24,8 +24,8 @@ public class StudentController {
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity updateStudent(@PathVariable Integer id,@RequestBody @Valid StudentDTO studentDTO){
-        studentService.updateStudent(id, studentDTO);
+    public ResponseEntity updateStudent(@AuthenticationPrincipal User user,@RequestBody @Valid StudentDTO studentDTO){
+        studentService.updateStudent(user.getId(), studentDTO);
         return ResponseEntity.status(200).body("Student updated successfully");
     }
 

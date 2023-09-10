@@ -24,8 +24,8 @@ class AuthRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        userAdmin = new User(null, "05333333333", "abc1234", "ADMIN", null, null, null);
-        user = new User(null, "0522222222", "abc1234", "USER", null, null, null);
+        userAdmin = new User(null, "0506333333", "Abcdefghi_#1234", "ADMIN", null, null, null);
+        user = new User(null, "0509222222", "Abccdefghi_#1234", "USER", null, null, null);
         authRepository.save(user);
         authRepository.save(userAdmin);
     }

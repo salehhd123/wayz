@@ -59,14 +59,14 @@ class StudentTripsControllerTest {
 
     @BeforeEach
     void setUp() {
-        user = new User(null,"0501111111","12345","DRIVER",
+        user = new User(null,"0501111111","12345Abcdefghi_#12345","STUDENT",
                 null,null,null);
 
-        student=new Student(null,"sara","PNU","Location",20,2500,user,null,null,null,null);
+        student=new Student(null,"sara","PNU","Location",20,user,null,null,null);
         studentRepository.save(student);
 
-        studentTrips1=new StudentTrips(null,5,"going",LocalDateTime.of(2023, 9, 8, 15, 30, 45),student);
-        studentTrips2=new StudentTrips(null,5,"return", LocalDateTime.now().plusDays(1),student);
+        studentTrips1=new StudentTrips(null,5,"going",LocalDateTime.of(2023, 9, 8, 15, 30, 45),student,null);
+        studentTrips2=new StudentTrips(null,5,"return", LocalDateTime.now().plusDays(1),student,null);
 
         studentTripsList1= Arrays.asList(studentTrips1);
         studentTripsList2=Arrays.asList(studentTrips2);
