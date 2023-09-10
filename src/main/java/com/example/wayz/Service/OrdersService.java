@@ -25,39 +25,37 @@ public class OrdersService {
         return ordersRepository.findAll();
     }
 
-    public void addOrders(Integer id,OrderDTO orders){
+    public void addOrders(Integer id, OrderDTO orders) {
         Student student = studentRepository.findStudentByUserId(id);
-        Orders orders1 = new Orders(null,orders.getNumberTrips(),18,orders.getCreatedAt(),student);
-        if(orders1.getTripPrice()*orders1.getNumberTrips()<=student.getBalance()){
-            throw new ApiException("sorry you do not have enough money !");
-        }
+        Orders orders1 = new Orders(null, orders.getNumberTrips(), 18, orders.getCreatedAt(), student);
+
         ordersRepository.save(orders1);
     }
 
-    public double totalOrderPrice(Integer order_id){
+    public double totalOrderPrice(Integer order_id) {
         Orders orders = ordersRepository.findOrdersById(order_id);
-        double total=orders.getTripPrice()*orders.getNumberTrips();
+        double total = orders.getTripPrice() * orders.getNumberTrips();
         return total;
     }
 
-    public void updateOrders(Integer id,Orders orders){
-        Orders orders1=ordersRepository.findOrdersById(id);
-        if (orders1==null) {
+    public void updateOrders(Integer id, Orders orders) {
+        Orders orders1 = ordersRepository.findOrdersById(id);
+        if (orders1 == null) {
             throw new ApiException("Order with ID " + id + " not found");
         }
         orders1.setTripPrice(orders.getTripPrice());
     }
 
-    public void deleteOrders(Integer id){
-        Orders orders=ordersRepository.findOrdersById(id);
-        if (orders==null){
+    public void deleteOrders(Integer id) {
+        Orders orders = ordersRepository.findOrdersById(id);
+        if (orders == null) {
             throw new ApiException("Order with ID " + id + " not found");
         }
         ordersRepository.deleteById(id);
     }
 
     public Orders getOrderById(Integer id) {
-        Orders order1=ordersRepository.findOrdersById(id);
+        Orders order1 = ordersRepository.findOrdersById(id);
         if (order1 == null) {
             throw new ApiException("ID Not Found");
         }

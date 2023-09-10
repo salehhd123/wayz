@@ -14,14 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentService {
     private final StudentRepository studentRepository;
-    private final CreditCardRepository creditCardRepository;
 
-
-    public List<Student> getAllStudent(){
+    public List<Student> getAllStudent() {
         return studentRepository.findAll();
     }
 
-    public void updateStudent(Integer id, StudentDTO studentDTO){
+    public void updateStudent(Integer id, StudentDTO studentDTO) {
         Student student = studentRepository.findStudentById(id);
         studentDTO.setUsername(student.getUser().getUsername());
         studentDTO.setPassword(student.getUser().getPassword());
@@ -32,9 +30,9 @@ public class StudentService {
     }
 
 
-    public void deleteStudent(Integer id){
+    public void deleteStudent(Integer id) {
         Student student = studentRepository.findStudentById(id);
-        if (student==null){
+        if (student == null) {
             throw new ApiException("Student with ID " + id + " not found");
         }
         studentRepository.delete(student);
