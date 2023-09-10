@@ -44,4 +44,10 @@ public class StudentTrips {
     @JoinColumn(name = "student_id", referencedColumnName = "user_id")
     @JsonIgnore
     private Student student;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_trips_id", referencedColumnName = "id")
+    @JsonIgnore
+    private UserTrips userTrips;
 }

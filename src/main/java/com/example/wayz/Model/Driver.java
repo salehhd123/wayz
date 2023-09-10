@@ -59,4 +59,9 @@ public class Driver {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "driver")
     private Set<DriverTrips> driverTrips;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "driver")
+//    @JoinColumn(name = "driver_id", referencedColumnName = "id")
+    private Set<UserTrips> userTrips;
 }
