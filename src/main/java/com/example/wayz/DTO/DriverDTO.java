@@ -25,12 +25,4 @@ public class DriverDTO {
     @NotEmpty(message = "the name field is required.")
     private String name;
 
-
-//    private String driverLicenceImgPath;
-//
-//    private String carRegistrationImgPath;
-//
-//    private String driverImgPath;
-//
-//    private String govIdImgPath;
 }

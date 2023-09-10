@@ -33,10 +33,11 @@ public class ReportController {
     @PostMapping("/add-report/{id}")
     public ResponseEntity addReport(
             @AuthenticationPrincipal User user,
-            @PathVariable Integer id, @RequestBody ReportDto reportDto,
+            @PathVariable Integer id,
+            @RequestParam(value = "data") String report,
             @RequestParam(value = "file", required = false) MultipartFile reportMedia) throws IOException {
 
-        reportService.addReport(user.getId(), id, reportDto, reportMedia);
+        reportService.addReport(user.getId(), id, report, reportMedia);
         return ResponseEntity.status(200).body(new ApiResponse("the report added"));
     }
 

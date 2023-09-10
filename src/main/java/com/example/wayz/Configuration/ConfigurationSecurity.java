@@ -39,7 +39,17 @@ public class ConfigurationSecurity {
                 .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests()
 
-                .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
+//                .requestMatchers("/api/v1/auth/register/**").permitAll()
+//                .requestMatchers("/api/v1/driver/**").hasAuthority("DRIVER")
+//                .requestMatchers("/api/v1/car/**").hasAuthority("DRIVER")
+//                .requestMatchers("/api/v1/driver-trips/**").hasAuthority("DRIVER")
+//                .requestMatchers("/api/v1/student**").hasAuthority("STUDENT")
+//                .requestMatchers("/api/v1/student-trips**").hasAuthority("STUDENT")
+//                .requestMatchers(HttpMethod.POST, "api/v1/report/add-report/**").hasAuthority("STUDENT")
+//                .requestMatchers("api/v1/report/**").hasAuthority("ADMIN")
+//                .requestMatchers("/api/v1/student").hasAuthority("ADMIN")
+
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/register/**").permitAll()
                 .anyRequest().permitAll()
 
                 .and()
