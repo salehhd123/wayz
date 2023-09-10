@@ -28,7 +28,6 @@ public class UserTrips {
 
 
     @ManyToOne
-//    @JoinColumn(name = "student_id", referencedColumnName = "user_id")
     @JsonIgnore
     private Driver driver;
 
