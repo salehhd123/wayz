@@ -43,10 +43,10 @@ class DriverTripsRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user = new User(null,"0501111111","12345","DRIVER",
+        user = new User(null,"0501111111","Abcdefghi_#12345","DRIVER",
                 null,null,null);
 
-         driver=new Driver(null,"bakr","pending",null,null,null,null,5,user,null,null,null);
+         driver=new Driver(null,"bakr","pending",5,user,null,null,null,null);
         driverRepository.save(driver);
 
         driverTrips1=new DriverTrips(null,"umm Al-qura", LocalDateTime.now(),LocalDateTime.now().plusHours(1),driver);

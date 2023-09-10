@@ -30,10 +30,10 @@ class CarRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user1 = new User(null,"0501111111","12345","DRIVER",
+        user1 = new User(null,"0501111111","Abcdefghi_#12345","DRIVER",
                 null,null,null);
 
-        Driver driver=new Driver(null,"bakr","pending",null,null,null,null,5,user1,null,null,null);
+        Driver driver=new Driver(null,"bakr","pending",5,user1,null,null,null,null);
         car1 = new Car(null, 2017, 5, "abe 123", "Sedan", driver);
     }
 

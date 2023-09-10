@@ -26,8 +26,8 @@ class StudentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user = new User(null, "0522222222", "abc1234", "USER", null, null, null);
-        student = new Student(null, "saleh", "noura", "googlemaps.com/1234", 0, 0, user, null, null, null, null);
+        user = new User(null, "0502222222", "Abcdefghi_#12345", "USER", null, null, null);
+        student = new Student(null, "saleh", "noura", "googlemaps.com/1234", 10, user, null, null, null);
         authRepository.save(user);
         studentRepository.save(student);
     }

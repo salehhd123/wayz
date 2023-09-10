@@ -45,8 +45,8 @@ class DriverServiceTest {
         user = new User(null,"0501111111","12345","DRIVER",
                 null,null,null);
 
-        driver1=new Driver(null,"bakr","pending",null,null,null,null,5,user,null,null,null);
-        driver2=new Driver(null,"bakr2","pending",null,null,null,null,5,user,null,null,null);
+        driver1=new Driver(null,"bakr","pending",5,user,null,null,null,null);
+        driver2=new Driver(null,"bakr2","pending",5,user,null,null,null,null);
 
         drivers=new ArrayList<>();
         drivers.add(driver1);

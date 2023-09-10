@@ -19,8 +19,8 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public void updateStudent(Integer id, StudentDTO studentDTO) {
-        Student student = studentRepository.findStudentById(id);
+    public void updateStudent(Integer studentId, StudentDTO studentDTO) {
+        Student student = studentRepository.findStudentById(studentId);
         studentDTO.setUsername(student.getUser().getUsername());
         studentDTO.setPassword(student.getUser().getPassword());
         studentDTO.setName(student.getName());

@@ -1,10 +1,12 @@
 package com.example.wayz.Controller;
 
 import com.example.wayz.Model.StudentTrips;
+import com.example.wayz.Model.User;
 import com.example.wayz.Service.StudentTripsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +17,7 @@ public class StudentTripsController {
     private final StudentTripsService studentTripsService;
 
     @GetMapping("/get-all")
-    public ResponseEntity getAllStudentTrips() {
+    public ResponseEntity getAllStudentTrips(@AuthenticationPrincipal User user) {
         return ResponseEntity.status(200).body(studentTripsService.getAllStudentTrips());
     }
 
