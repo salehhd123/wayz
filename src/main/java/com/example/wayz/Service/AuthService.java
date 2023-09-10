@@ -25,18 +25,18 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final FileService fileService;
 
-    public void registerStudent(StudentDTO studentDto){
-        User user = new User(null,studentDto.getUsername(),studentDto.getPassword(),"STUDENT",null,null,null);
-        Student student=new Student(null,studentDto.getName(),studentDto.getUniversity(),studentDto.getHomeGoogleMapUrl(),
-                0,0,user,null,null,null,null);
+    public void registerStudent(StudentDTO studentDto) {
+        User user = new User(null, studentDto.getUsername(), studentDto.getPassword(), "STUDENT", null, null, null);
+        Student student = new Student(null, studentDto.getName(), studentDto.getUniversity(), studentDto.getHomeGoogleMapUrl(),
+                0, user, null, null, null);
 
-        String hash=new BCryptPasswordEncoder().encode(user.getPassword());
+        String hash = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(hash);
         studentRepository.save(student);
     }
 
     public void registerDriver(DriverDTO driverDTO, MultipartFile id, MultipartFile license, MultipartFile registration, MultipartFile pic) throws IOException {
-        User user = new User(null,driverDTO.getUsername(),driverDTO.getPassword(),"DRIVER",null,null,null);
+        User user = new User(null, driverDTO.getUsername(), driverDTO.getPassword(), "DRIVER", null, null, null);
 //        Driver driver=new Driver(null,driverDTO.getStatus(),driverDTO.getDriverLicenceImgPath(),driverDTO.getCarRegistrationImgPath(),
 //                driverDTO.getDriverImgPath(), driverDTO.getGovIdImgPath(),user,null,null, null);
 
@@ -45,13 +45,13 @@ public class AuthService {
         driver.setStatus("pending");
         driver.setName(driverDTO.getName());
 
-        String hash=new BCryptPasswordEncoder().encode(user.getPassword());
+        String hash = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(hash);
         driver = driverRepository.save(driver); // make sure to get the ID
 
 
         // save driver files.
-        HashMap<String, MultipartFile> files = new HashMap<>(4){{
+        HashMap<String, MultipartFile> files = new HashMap<>(4) {{
             put("id", id);
             put("license", license);
             put("registration", registration);

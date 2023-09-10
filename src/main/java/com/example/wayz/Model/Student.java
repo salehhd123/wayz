@@ -35,11 +35,7 @@ public class Student {
 
 
     @Column(nullable = false)
-    private Integer tripsLeft=0;
-
-    @Column(nullable = false)
-    private Integer balance=0;
-
+    private Integer tripsLeft = 0;
 
     @OneToOne
     @MapsId
@@ -55,8 +51,4 @@ public class Student {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private Set<Report> Reports;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "student")
-    @PrimaryKeyJoinColumn
-    private CreditCard creditCard;
 }

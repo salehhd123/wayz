@@ -32,6 +32,4 @@ public class StudentDTO {
 
     private Integer tripsLeft=0;
 
-    private Integer balance=0;
-
 }
