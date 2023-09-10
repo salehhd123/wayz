@@ -38,7 +38,7 @@ public class AuthService {
 
     public void registerDriver(String data, MultipartFile id, MultipartFile license, MultipartFile registration, MultipartFile pic) throws IOException {
 
-        DriverDTO driverDTO = new ObjectMapper().convertValue(data, DriverDTO.class);
+        DriverDTO driverDTO = new ObjectMapper().readValue(data, DriverDTO.class);
 
         User user = new User(null, driverDTO.getUsername(), driverDTO.getPassword(), "DRIVER", null, null, null);
 
@@ -48,6 +48,7 @@ public class AuthService {
         driver.setUser(user);
         driver.setStatus("pending");
         driver.setName(driverDTO.getName());
+        driver.setUnCashedTrips(0);
 
         String hash = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(hash);

@@ -2,6 +2,7 @@ package com.example.wayz.Service;
 
 
 import com.example.wayz.Api.ApiException.ApiException;
+import com.example.wayz.DTO.DriverDTO;
 import com.example.wayz.DTO.ReportDto;
 import com.example.wayz.Model.Driver;
 import com.example.wayz.Model.Report;
@@ -11,6 +12,7 @@ import com.example.wayz.Repository.AuthRepository;
 import com.example.wayz.Repository.DriverRepository;
 import com.example.wayz.Repository.ReportRepository;
 import com.example.wayz.Repository.StudentRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,9 +39,12 @@ public class ReportService {
         return reportRepository.allPending();
     }
 
-    public void addReport(Integer user_id, Integer driver_id, ReportDto reportDto, MultipartFile file) throws IOException, ApiException {
+    public void addReport(Integer user_id, Integer driver_id, String reportStr, MultipartFile file) throws IOException, ApiException {
         Student student = studentRepository.findStudentById(user_id);
+        System.out.println(student.toString());
         Driver driver = driverRepository.findDriverById(driver_id);
+        ReportDto reportDto = new ObjectMapper().readValue(reportStr, ReportDto.class);
+
         if (driver == null) {
             throw new ApiException("Driver with ID " + driver_id + " not found");
         }

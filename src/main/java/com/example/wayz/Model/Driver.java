@@ -28,18 +28,6 @@ public class Driver {
     @Column(columnDefinition = "varchar(255) not null default 'pending' check (status in ('pending', 'approved', 'closed')) ")
     private String status;
 
-    @Column(columnDefinition = "varchar(255) unique not null")
-    private String driverLicenceImgPath;
-
-    @Column(columnDefinition = "varchar(255) unique not null")
-    private String carRegistrationImgPath;
-
-    @Column(columnDefinition = "varchar(255) unique not null")
-    private String driverImgPath;
-
-    @Column(columnDefinition = "varchar(255) unique not null")
-    private String govIdImgPath;
-
     @Column(columnDefinition = "int not null default 0")
     private Integer unCashedTrips;
 

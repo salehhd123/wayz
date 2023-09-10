@@ -32,9 +32,9 @@ public class FileService {
     private final DriverRepository driverRepository;
     private final ReportRepository reportRepository;
 
-//    private final String SERVER_FILES_FOLDER = "C:/Users/isaud/IdeaProjects/System/src/main/resources/users_files/";
+    private final String SERVER_FILES_FOLDER = "C:/Users/isaud/IdeaProjects/wayz/src/main/resources/users_files/";
 
-    private final String SERVER_FILES_FOLDER = "/home/alharbi/projects/toys/wayz/src/main/resources/users_files/";
+//    private final String SERVER_FILES_FOLDER = "/home/alharbi/projects/toys/wayz/src/main/resources/users_files/";
 
     //// record to put the file info and the file itself in one place I think it's more readable this way, plus we can return both from a function.
     public record FileInfoRecord(MediaType mediaType, byte[] data) {
@@ -78,10 +78,11 @@ public class FileService {
         Report report = reportRepository.findReportById(reportId);
 
         if (report == null) {
-            throw new ApiException("Could not find a driver with this id.");
+            throw new ApiException("Could not find a report with this id.");
         }
-        String fileLocation = SERVER_FILES_FOLDER + "student_" + report.getStudent().getUser().getId() + "/";
+        String fileLocation = SERVER_FILES_FOLDER + "student_" + report.getStudent().getId() + "/";
 
+        System.out.println("********AAA");
         Files.createDirectories(Paths.get(fileLocation));
 
 
@@ -95,7 +96,7 @@ public class FileService {
         int fileSizeInMb = Math.toIntExact((file.getSize() >> 20));
 
         MyFile uploadFile = new MyFile();
-        uploadFile.setFileName(file.getOriginalFilename());
+        uploadFile.setFileName(fileRandomName);
         uploadFile.setFileType(file.getContentType());
         uploadFile.setSize(fileSizeInMb > 0 ? fileSizeInMb : 1); //// if file is less than 1mb it'll be 0 after shifting so we'll just put 1mb as an approximation in that case.
         uploadFile.setUser(report.getStudent().getUser());
@@ -121,8 +122,6 @@ public class FileService {
 
     public FileInfoRecord downloadFileById(Integer studentId, Integer fileID) throws IOException, ApiException {
 
-
-        ///// doing this way allows us to prevent any unwanted access to any user's files since this token is generated and given everytime the user login to their account.
         User user = userRepository.findUserById(studentId);
 
 
@@ -141,7 +140,7 @@ public class FileService {
 
     }
 
-    public FileInfoRecord downloadDriverLicence(Integer driverId) throws IOException, RuntimeException {
+    public FileInfoRecord downloadDriverLicense(Integer driverId) throws IOException, RuntimeException {
 
         User user = userRepository.findUserById(driverId);
 

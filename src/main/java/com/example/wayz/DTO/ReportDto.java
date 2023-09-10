@@ -12,9 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportDto {
-    private String media;
 
-    @Column(nullable = false)
+    @NotEmpty(message = "Report description cannot be empty")
     private String description;
 
 }
