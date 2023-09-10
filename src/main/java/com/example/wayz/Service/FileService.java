@@ -59,8 +59,7 @@ public class FileService {
             }
 
             file.transferTo(new File(fileLocation + docType));
-            System.out.println(file.getOriginalFilename());
-            System.out.println("**********AAA");
+
             int fileSizeInMb = Math.toIntExact((file.getSize() >> 20));
 
             MyFile uploadFile = new MyFile();
@@ -141,7 +140,7 @@ public class FileService {
 
     }
 
-    public FileInfoRecord downloadDriverLicence(Integer driverId) throws IOException, RuntimeException {
+    public FileInfoRecord downloadDriverLicense(Integer driverId) throws IOException, RuntimeException {
 
         User user = userRepository.findUserById(driverId);
 
