@@ -32,9 +32,9 @@ public class DriverController {
     }
 
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity getDriverById() {
+    public ResponseEntity getDriverById(@PathVariable Integer id) {
 
-        return ResponseEntity.status(200).body(driverService.getAllDrivers());
+        return ResponseEntity.status(200).body(driverService.getDriver(id));
     }
 
 

@@ -39,28 +39,31 @@ public class ConfigurationSecurity {
                 .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests()
 
-//                .requestMatchers("/api/v1/auth/register/**").permitAll()
-//                .requestMatchers("/api/v1/driver/**").hasAuthority("DRIVER")
-//                .requestMatchers("/api/v1/car/**").hasAuthority("DRIVER")
-//                .requestMatchers("/api/v1/driver-trips/**").hasAuthority("DRIVER")
-//                .requestMatchers("/api/v1/user-trips/**").hasAuthority("DRIVER")
-//                .requestMatchers("/api/v1/student**").hasAuthority("STUDENT")
-//                .requestMatchers("/api/v1/student-trips**").hasAuthority("STUDENT")
-//                .requestMatchers(HttpMethod.POST, "/api/v1/report/add-report/**").hasAuthority("STUDENT")
-//                .requestMatchers("/api/v1/report/**").hasAuthority("ADMIN")
-//                .requestMatchers("/api/v1/student").hasAuthority("ADMIN")
-
-                .requestMatchers(HttpMethod.POST, "/api/v1/auth/register/**").permitAll()
+                .requestMatchers("/api/v1/auth/register/**").permitAll()
+                .requestMatchers("/api/v1/driver//get-top").permitAll()
+                .requestMatchers("/api/v1/driver/update/{updatedName}").hasAuthority("DRIVER")
+                .requestMatchers("/api/v1/driver/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/v1/car/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/v1/driver-trips/get").hasAuthority("ADMIN")
+                .requestMatchers("/api/v1/driver-trips/**").hasAuthority("DRIVER")
+                .requestMatchers("/api/v1/files/get-allowed").permitAll()
+                .requestMatchers("/api/v1/files/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/v1/orders/add").hasAuthority("STUDENT")
+                .requestMatchers("/api/v1/orders/update/{id}").hasAuthority("STUDENT")
+                .requestMatchers("/api/v1/orders/**").hasAuthority("ADMIN")
+                .requestMatchers("api/v1/report/add-report/{id}").hasAuthority("STUDENT")
+                .requestMatchers("api/v1/report/delete-report/{id}").hasAuthority("STUDENT")
+                .requestMatchers("api/v1/report/**").hasAuthority("ADMIN")
+                .requestMatchers("api/v1/student/update/{id}").hasAuthority("STUDENT")
+                .requestMatchers("api/v1/student/**").hasAuthority("ADMIN")
+                //// TODO add student trip & user trip
                 .anyRequest().permitAll()
-
                 .and()
                 .logout().logoutUrl("/api/v1/auth/logout")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
                 .and()
                 .httpBasic();
-
-
         return http.build();
 
     }
