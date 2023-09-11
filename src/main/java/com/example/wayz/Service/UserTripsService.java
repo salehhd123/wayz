@@ -1,7 +1,9 @@
 package com.example.wayz.Service;
 
+import com.example.wayz.Api.ApiException.ApiException;
 import com.example.wayz.Model.Driver;
 import com.example.wayz.Model.StudentTrips;
+import com.example.wayz.Model.User;
 import com.example.wayz.Model.UserTrips;
 import com.example.wayz.Repository.DriverRepository;
 import com.example.wayz.Repository.DriverTripsRepository;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -111,6 +114,25 @@ public class UserTripsService {
 
 
 
+
+    public String switchStatusToComplete(User user, Integer userTripId) {
+
+        UserTrips userTrips = userTripsRepository.findUserTripsById(userTripId);
+
+        if(userTrips == null) {
+            throw new ApiException("user trip not found.");
+        }
+
+        if(!Objects.equals(userTrips.getDriver().getId(), user.getId())) {
+            throw new ApiException("you can not edit this trip.");
+        }
+
+        userTrips.setStatus("completed");
+
+        userTripsRepository.save(userTrips);
+
+        return "user trip with id: " + userTripId + " have been completed.";
+    }
 
 
 }

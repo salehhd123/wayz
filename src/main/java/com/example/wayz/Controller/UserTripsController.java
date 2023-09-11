@@ -1,14 +1,13 @@
 package com.example.wayz.Controller;
 
 
+import com.example.wayz.Model.User;
 import com.example.wayz.Model.UserTrips;
 import com.example.wayz.Service.UserTripsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +29,10 @@ public class UserTripsController {
     public ResponseEntity<String> generate() {
         userTripsService.createUserTrips();
         return ResponseEntity.ok("generated trips.");
+    }
+
+    @PostMapping("/complete/{userTripId}")
+    public ResponseEntity<String> switchAsComplete(@PathVariable("userTripId") Integer userTripId, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(userTripsService.switchStatusToComplete(user, userTripId));
     }
 }

@@ -18,4 +18,6 @@ public interface UserTripsRepository extends JpaRepository<UserTrips, Integer> {
     List<Driver> findAllFreeDrivers();
 
 
+
+    UserTrips findUserTripsById(Integer userTripId);
 }
