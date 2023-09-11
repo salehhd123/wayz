@@ -50,10 +50,12 @@ public class DriverTripsService {
 
         if(driverTripDTO.getShift().equalsIgnoreCase("morning")) {
             timeRange = timeRanges[0][index];
+            driverTrips.setShift("morning");
         }
 
         if(driverTripDTO.getShift().equalsIgnoreCase("evening")) {
             timeRange = timeRanges[1][index];
+            driverTrips.setShift("evening");
         }
 
         driverTrips.setStartTime(timeRange.getStart());

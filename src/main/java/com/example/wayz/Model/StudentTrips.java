@@ -39,6 +39,12 @@ public class StudentTrips {
     private LocalDateTime timestamp;
 
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime endTime;
+
+
+
+
 
     @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "user_id")

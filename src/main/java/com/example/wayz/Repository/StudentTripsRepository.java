@@ -27,4 +27,9 @@ public interface StudentTripsRepository extends JpaRepository<StudentTrips, Inte
     @Query("select count (c) from StudentTrips c where c.student.id=?1 ")
     Integer tripsNumber(Integer id);
 
+
+
+    @Query("SELECT st FROM StudentTrips st WHERE st.type = ?1 and st.timestamp between st.timestamp and st.endTime and st.userTrips = null ORDER BY st.id ASC LIMIT 10")
+    List<StudentTrips> findAllStudentTripsBetweenTimestampAndEndTime(String type);
+
 }

@@ -31,6 +31,9 @@ public class UserTrips {
     @JsonIgnore
     private Driver driver;
 
+    @Column(nullable = false)
+    private String status;
+
 
 
 }
