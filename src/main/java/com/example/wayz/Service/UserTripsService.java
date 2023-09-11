@@ -1,17 +1,12 @@
 package com.example.wayz.Service;
 
 import com.example.wayz.Api.ApiException.ApiException;
-import com.example.wayz.Model.Driver;
-import com.example.wayz.Model.StudentTrips;
-import com.example.wayz.Model.User;
-import com.example.wayz.Model.UserTrips;
-import com.example.wayz.Repository.DriverRepository;
-import com.example.wayz.Repository.DriverTripsRepository;
-import com.example.wayz.Repository.StudentTripsRepository;
-import com.example.wayz.Repository.UserTripsRepository;
+import com.example.wayz.Model.*;
+import com.example.wayz.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -24,7 +19,7 @@ public class UserTripsService {
     private final StudentTripsRepository studentTripsRepository;
     private final DriverTripsRepository driverTripsRepository;
     private final DriverRepository driverRepository;
-
+    private final OrdersRepository ordersRepository;
 
 
     public List<UserTrips> findAll() {
@@ -39,9 +34,6 @@ public class UserTripsService {
 
 
         startProcess(drivers, studentTrips);
-
-
-
 
 
 //        List<StudentTrips> studentTrips = studentTripsRepository.findAll();
@@ -74,9 +66,9 @@ public class UserTripsService {
 
 
     public void startProcess(List<Driver> drivers, List<StudentTrips> studentTrips) {
-        for (Driver driver: drivers) {
+        for (Driver driver : drivers) {
 
-            if(studentTrips.isEmpty()) {
+            if (studentTrips.isEmpty()) {
                 break;
             }
 
@@ -86,24 +78,26 @@ public class UserTripsService {
             userTrips.setStatus("in-progress");
             userTrips.setDriver(driver);
 
-            for (StudentTrips studentTrips1 : studentTrips) {
+            for (StudentTrips studentTrip : studentTrips) {
 
+                Orders order = new Orders(null, studentTrip.getStudent().getTripsLeft(), 18, "unpaid", LocalDateTime.now(), studentTrip.getStudent());
+                ordersRepository.save(order);
 
-                if(userTrips.getStudentTrips() == null) {
+                if (userTrips.getStudentTrips() == null) {
                     userTrips.setStudentTrips(Set.of());
                 }
 
                 userTripsRepository.save(userTrips);
 
-                if(counter == 0) {
+                if (counter == 0) {
                     break;
                 }
 
 
 //                userTrips.getStudentTrips().add(studentTrips1);
 
-                studentTrips1.setUserTrips(userTrips);
-                studentTripsRepository.save(studentTrips1);
+                studentTrip.setUserTrips(userTrips);
+                studentTripsRepository.save(studentTrip);
 
 
                 counter--;
@@ -113,17 +107,21 @@ public class UserTripsService {
     }
 
 
-
-
     public String switchStatusToComplete(User user, Integer userTripId) {
 
         UserTrips userTrips = userTripsRepository.findUserTripsById(userTripId);
 
-        if(userTrips == null) {
+        if (userTrips == null) {
             throw new ApiException("user trip not found.");
         }
 
-        if(!Objects.equals(userTrips.getDriver().getId(), user.getId())) {
+        for (StudentTrips trip : userTrips.getStudentTrips()) {
+            int tripsNow = trip.getStudent().getTripsLeft();
+            trip.getStudent().setTripsLeft(tripsNow - 1);
+            studentTripsRepository.save(trip);
+        }
+
+        if (!Objects.equals(userTrips.getDriver().getId(), user.getId())) {
             throw new ApiException("you can not edit this trip.");
         }
 
