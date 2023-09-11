@@ -28,6 +28,11 @@ public class Driver {
     @Column(columnDefinition = "varchar(255) not null default 'pending' check (status in ('pending', 'approved', 'closed')) ")
     private String status;
 
+    @Pattern(message = "the availability must be one of `free`, `busy`. ", regexp = "(?i)\\b(free|busy)\\b?")
+    @Column(columnDefinition = "varchar(255) default 'free' check (availability in ('free', 'busy')) ")
+    private String availability;
+
+
     @Column(columnDefinition = "int not null default 0")
     private Integer unCashedTrips;
 

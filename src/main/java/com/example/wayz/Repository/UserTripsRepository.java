@@ -2,11 +2,13 @@ package com.example.wayz.Repository;
 
 import com.example.wayz.Model.Driver;
 import com.example.wayz.Model.DriverTrips;
+import com.example.wayz.Model.StudentTrips;
 import com.example.wayz.Model.UserTrips;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -20,4 +22,8 @@ public interface UserTripsRepository extends JpaRepository<UserTrips, Integer> {
 
 
     UserTrips findUserTripsById(Integer userTripId);
+
+//
+//    @Query("SELECT ut FROM user_trips ut WHERE ut.studentTrips")
+//    List<UserTrips> findStudentTrips();
 }

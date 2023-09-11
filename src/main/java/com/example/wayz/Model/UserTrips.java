@@ -35,5 +35,12 @@ public class UserTrips {
     private String status;
 
 
+    @Column()
+    private String fromLocation;
+
+    @Column()
+    private String toLocation;
+
+
 
 }

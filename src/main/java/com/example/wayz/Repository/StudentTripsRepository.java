@@ -29,7 +29,10 @@ public interface StudentTripsRepository extends JpaRepository<StudentTrips, Inte
 
 
 
-    @Query("SELECT st FROM StudentTrips st WHERE st.type = ?1 and st.timestamp between st.timestamp and st.endTime and st.userTrips = null ORDER BY st.id ASC LIMIT 10")
-    List<StudentTrips> findAllStudentTripsBetweenTimestampAndEndTime(String type);
+    @Query("SELECT st FROM StudentTrips st WHERE st.type = ?1 and st.timestamp <= ?2 and st.userTrips = null ORDER BY st.id ASC LIMIT 10")
+    List<StudentTrips> findAllStudentTripsBetweenTimestampAndEndTime(String type, LocalDateTime start);
+
+    @Query("SELECT count(st.id) FROM StudentTrips st WHERE st.timestamp between ?1 AND st.endTime AND st.userTrips = null")
+    Integer countTripsPerDay(LocalDateTime now);
 
 }
