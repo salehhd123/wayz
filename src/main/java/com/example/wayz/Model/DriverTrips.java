@@ -35,7 +35,6 @@ public class DriverTrips {
 
     private String shift;
 
-
     // Relation
 
     @ManyToOne

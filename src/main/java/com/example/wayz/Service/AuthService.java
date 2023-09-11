@@ -54,6 +54,7 @@ public class AuthService {
         driver.setStatus("pending");
         driver.setName(driverDTO.getName());
         driver.setUnCashedTrips(0);
+        driver.setAvailability("free");
 
 
         String hash = new BCryptPasswordEncoder().encode(user.getPassword());

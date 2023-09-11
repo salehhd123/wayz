@@ -36,6 +36,8 @@ public class Car {
     @Column(nullable = false, unique = true)
     private String plate;
 
+    @Column(columnDefinition = "int default 0")
+    private Integer currentPassengers;
 
     /**
      * Sedan
