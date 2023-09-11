@@ -51,11 +51,17 @@ public class ConfigurationSecurity {
                 .requestMatchers("/api/v1/orders/add").hasAuthority("STUDENT")
                 .requestMatchers("/api/v1/orders/update/{id}").hasAuthority("STUDENT")
                 .requestMatchers("/api/v1/orders/**").hasAuthority("ADMIN")
-                .requestMatchers("api/v1/report/add-report/{id}").hasAuthority("STUDENT")
-                .requestMatchers("api/v1/report/delete-report/{id}").hasAuthority("STUDENT")
-                .requestMatchers("api/v1/report/**").hasAuthority("ADMIN")
-                .requestMatchers("api/v1/student/update/{id}").hasAuthority("STUDENT")
-                .requestMatchers("api/v1/student/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/v1/report/add-report/{id}").hasAuthority("STUDENT")
+                .requestMatchers("/api/v1/report/delete-report/{id}").hasAuthority("STUDENT")
+                .requestMatchers("/api/v1/report/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/v1/student/update/{id}").hasAuthority("STUDENT")
+                .requestMatchers("/api/v1/student/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/v1/student-trips/get-all").hasAuthority("ADMIN")
+                .requestMatchers("/api/v1/student-trips/**").hasAnyAuthority("STUDENT", "ADMIN")
+                .requestMatchers("/api/v1/user-trips/complete/{userTripId}").hasAuthority("DRIVER")
+                .requestMatchers("/api/v1/user-trips/**").hasAuthority("ADMIN")
+
+
                 //// TODO add student trip & user trip
                 .anyRequest().permitAll()
                 .and()
