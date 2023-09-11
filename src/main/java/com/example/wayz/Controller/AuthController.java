@@ -3,10 +3,12 @@ package com.example.wayz.Controller;
 
 import com.example.wayz.DTO.DriverDTO;
 import com.example.wayz.DTO.StudentDTO;
+import com.example.wayz.Model.User;
 import com.example.wayz.Service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,13 +31,14 @@ public class AuthController {
     @PostMapping("/register/driver")
     public ResponseEntity<String> registerDriver(
                     @RequestParam("data") String data,
+                    @RequestParam("car") String car,
                     @RequestParam("id") MultipartFile id,
                     @RequestParam("license") MultipartFile license,
                     @RequestParam("registration") MultipartFile registration,
                     @RequestParam("pic") MultipartFile pic
             ) throws IOException
     {
-        authService.registerDriver(data, id, license, registration, pic);
+        authService.registerDriver(data, car, id, license, registration, pic);
         return ResponseEntity.status(200).body("user registered");
     }
 

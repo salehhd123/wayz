@@ -33,6 +33,8 @@ public class DriverTrips {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime endTime;
 
+    private String shift;
+
 
     // Relation
 

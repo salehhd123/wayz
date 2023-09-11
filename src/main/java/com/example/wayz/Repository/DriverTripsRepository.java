@@ -17,6 +17,15 @@ public interface DriverTripsRepository extends JpaRepository<DriverTrips, Intege
     List<DriverTrips> findAllByDriverId(Integer driverId);
 
 
+
+    @Query("SELECT dt.driver FROM driver_trips dt WHERE dt.shift = ?1 AND dt.startTime BETWEEN dt.startTime AND dt.endTime ORDER BY dt.id ASC LIMIT 5")
+    List<Driver> findFirstFiveDriversInShift(String shift);
+
+
+    @Query("SELECT dt.driver FROM driver_trips dt WHERE dt.shift = ?1 AND dt.startTime BETWEEN dt.startTime AND dt.endTime AND dt.id > ?1 ORDER BY dt.id ASC LIMIT 5")
+    List<Driver> findNextFiveDrivers(Integer id);
+
+
     @Query("select c.driver.name as tripsCount from driver_trips c order by count(c.driver.id) DESC limit 10")
     List<String> findTheMostDriver();
 

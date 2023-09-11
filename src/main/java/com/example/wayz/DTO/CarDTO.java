@@ -19,6 +19,8 @@ public class CarDTO {
     @Pattern(regexp = "^[a-zA-Z]*$", message = "Please enter only letters")
     String plateLetter;
 
+    // { "seats": 4, "model": 2020, "plateLetter": "abc", "plateNumbers": 1234, "type": "hatchback" }
+
     @NotEmpty(message = "Plate numbers cannot be empty")
     @Pattern(regexp = "\\d+", message = "Please enter only numbers")
     String plateNumbers;

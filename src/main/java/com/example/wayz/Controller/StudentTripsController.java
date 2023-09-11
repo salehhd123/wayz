@@ -22,8 +22,8 @@ public class StudentTripsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity addStudentTrip(@RequestBody @Valid StudentTrips studentTrip) {
-        studentTripsService.createStudentTrip(studentTrip);
+    public ResponseEntity addStudentTrip(@AuthenticationPrincipal User user, @RequestBody @Valid StudentTrips studentTrip) {
+        studentTripsService.createStudentTrip(studentTrip, user);
         return ResponseEntity.status(200).body("Student Trips added successfully");
     }
 

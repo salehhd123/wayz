@@ -29,6 +29,16 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new ApiException("Wrong username or password.");
         }
 
+        if(user.getRole().equalsIgnoreCase("DRIVER")) {
+            driverValidation(user);
+        }
+
+
+        return user;
+    }
+
+
+    private void driverValidation(User user) {
         if (driverRepository.findDriverById(user.getId()).getStatus().equalsIgnoreCase("pending")) {
             throw new ApiException("You cannot login your account is still pending.");
         } else if (driverRepository.findDriverById(user.getId()).getStatus().equalsIgnoreCase("closed")) {
@@ -39,7 +49,5 @@ public class UserDetailsService implements org.springframework.security.core.use
             driverService.closeDriver(user.getId());
             throw new ApiException("YOU ARE FIRED, GET OUT.");
         }
-
-        return user;
     }
 }
