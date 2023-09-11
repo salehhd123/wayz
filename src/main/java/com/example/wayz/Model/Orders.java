@@ -3,6 +3,7 @@ package com.example.wayz.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,11 @@ public class Orders {
     @NotNull(message = "Trip Price can't be empty")
     @Column(nullable = false)
     private Integer tripPrice;
+
+
+    @Pattern(message = "the status must be one of `paid`, `unpaid`. ", regexp = "(?i)\\b(paid|unpaid)\\b?")
+    @Column(columnDefinition = "varchar(255) not null default 'unpaid' check (status in ('paid', 'unpaid')) ")
+    private String status;
 
 
     @CreationTimestamp

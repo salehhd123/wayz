@@ -10,6 +10,7 @@ import com.example.wayz.Repository.StudentTripsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,9 +28,9 @@ public class OrdersService {
 
     public void addOrders(Integer id, OrderDTO orders) {
         Student student = studentRepository.findStudentByUserId(id);
-        Orders orders1 = new Orders(null, orders.getNumberTrips(), 18, orders.getCreatedAt(), student);
+        Orders order = new Orders(null, orders.getNumberTrips(), orders.getTripPrice(), "unpaid", orders.getCreatedAt(), student);
 
-        ordersRepository.save(orders1);
+        ordersRepository.save(order);
     }
 
     public double totalOrderPrice(Integer order_id) {

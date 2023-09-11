@@ -17,7 +17,7 @@ public class StudentTripsController {
     private final StudentTripsService studentTripsService;
 
     @GetMapping("/get-all")
-    public ResponseEntity getAllStudentTrips(@AuthenticationPrincipal User user) {
+    public ResponseEntity getAllStudentTrips() {
         return ResponseEntity.status(200).body(studentTripsService.getAllStudentTrips());
     }
 
@@ -30,8 +30,8 @@ public class StudentTripsController {
     @PutMapping("/update/{id}")
     public ResponseEntity updateStudentTrip(
             @PathVariable Integer id, @RequestBody @Valid StudentTrips studentTrip) {
-             studentTripsService.updateStudentTrip(id, studentTrip);
-            return ResponseEntity.status(200).body("Student Trips updated successfully");
+        studentTripsService.updateStudentTrip(id, studentTrip);
+        return ResponseEntity.status(200).body("Student Trips updated successfully");
     }
 
     @DeleteMapping("/delete/{id}")
@@ -46,7 +46,6 @@ public class StudentTripsController {
     }
 
 
-
     @GetMapping("/findByTypeIgnoreCase/{type}")
     public ResponseEntity getStudentTripsByTypeIgnoreCase(@PathVariable String type) {
         return ResponseEntity.status(200).body(studentTripsService.getTripsByType(type));
@@ -59,8 +58,8 @@ public class StudentTripsController {
     }
 
     @GetMapping("/TripsByStudentIdAndType/{studentId}/{type}")
-    public ResponseEntity getTripsByStudentIdAndType(@PathVariable Integer studentId,@PathVariable String type ) {
-        return ResponseEntity.status(200).body(studentTripsService.getTripsByStudentAndType(studentId,type));
+    public ResponseEntity getTripsByStudentIdAndType(@PathVariable Integer studentId, @PathVariable String type) {
+        return ResponseEntity.status(200).body(studentTripsService.getTripsByStudentAndType(studentId, type));
     }
 
 }
