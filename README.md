@@ -54,6 +54,9 @@ in 4 days:
 
 ## 6. [Canva Presentation](https://www.canva.com/design/DAFuIYG7-jE/5bv9mME-AeUKfhUpktWrow/edit?utm_content=DAFuIYG7-jE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
+## USE CASE ## 6. Use Case Diagram
+![Use case diagram](https://github.com/Tuwaiq-Team-4/wayz/assets/71578301/763be234-ce98-455c-a678-9295792dbfa4)
+
 
 
 
